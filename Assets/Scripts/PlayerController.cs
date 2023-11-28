@@ -4,55 +4,85 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController: MonoBehaviour
 {
 
-    [SerializeField] private Rigidbody rb;
-    [SerializeField] private float speed = 5;
-    [SerializeField] private float turnSpeed = 360;
-    private Vector3 _input;
-    private Transform _transform;
+    private InputHandler _input;
+    
+    [SerializeField] private Camera cameraOverworld;
+    [SerializeField] private Camera cameraUnderworld;
+    [SerializeField] private float movementSpeed;
 
-    private void Start()
+    private Camera _activeCamera;
+    private Vector3 _targetVector;
+    private bool _swapped;
+    
+    private void Awake()
     {
-        _transform = transform;
+        _input = GetComponent<InputHandler>();
+        _activeCamera = cameraOverworld;
+        cameraOverworld.enabled = true;
+        cameraUnderworld.enabled = false;
+        _swapped = false;
     }
 
+    // Update is called once per frame
     void Update()
     {
-        GetPlayerInput();
-        Look();
-    }
-
-    private void FixedUpdate()
-    {
-        Move();
-    }
-
-    void GetPlayerInput()
-    {
-        _input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-        
-    }
-
-    void Look()
-    {
-        if (_input != Vector3.zero)
+        if (!_swapped)
         {
-            Matrix4x4 rotationMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
-
-            Vector3 skewedInput = rotationMatrix.MultiplyPoint3x4(_input);
-            
-            Vector3 position = _transform.position;
-            Vector3 relative = (position + skewedInput) - position;
-            Quaternion rotation = Quaternion.LookRotation(relative, Vector3.up);
-
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, turnSpeed * Time.deltaTime);
+            _targetVector = new Vector3(_input.InputVector.x, 0, _input.InputVector.y);
         }
+        else
+        {
+            _targetVector = new Vector3(_input.InputVector.x, 0, _input.InputVector.y * -1);
+        }
+        MoveTowardTarget(_targetVector); 
+        RotateFromMouseVector();
+
+        if (Input.GetKeyDown(KeyCode.F) == true)
+        {
+            if (cameraOverworld.enabled)
+            {
+                cameraOverworld.enabled = false;
+                cameraUnderworld.enabled = true;
+            }
+            else
+            {
+                cameraOverworld.enabled = true;
+                cameraUnderworld.enabled = false;
+            }
+
+            _swapped = !_swapped;
+        }
+
     }
 
-    void Move()
+    private void MoveTowardTarget(Vector3 targetVector)
     {
-        rb.MovePosition(_transform.position + _transform.forward * (_input.normalized.magnitude * (speed * Time.deltaTime)));
+        var speed = movementSpeed * Time.deltaTime;
+        targetVector = targetVector.normalized;
+        targetVector = Quaternion.Euler(0, _activeCamera.gameObject.transform.rotation.eulerAngles.y, 0) * targetVector;
+        var transform1 = transform;
+        var targetPosition = transform1.position + targetVector * speed;
+        transform1.position = targetPosition;
+    }
+    
+    // ReSharper disable Unity.PerformanceAnalysis
+    private void RotateFromMouseVector()
+    {
+        Ray ray;
+        if (_swapped)
+        {
+            ray = cameraUnderworld.ScreenPointToRay(_input.MousePosition);
+        }
+        else
+        {
+            ray = cameraOverworld.ScreenPointToRay(_input.MousePosition);
+        }
+        if (!Physics.Raycast(ray, out RaycastHit hitInfo, maxDistance: 300f)) return;
+        var target = hitInfo.point;
+        target.y = transform.position.y;
+        transform.LookAt(target);
     }
 }

@@ -1,24 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CameraFollow : MonoBehaviour
 {
 
-    [SerializeField] private Transform player;
+    [SerializeField] private Transform target;
     [SerializeField] private float smoothing = 5f;
-    [SerializeField] private Vector3 offset;
     
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private Vector3 _offset;
+    private Transform _currentTarget;
 
-    // Update is called once per frame
+    private void Awake()
+    {
+        _currentTarget = target;
+        _offset = transform.position - _currentTarget.position;
+    }
+    
     void LateUpdate()
     {
-        Vector3 targetCameraPosition = player.position + offset;
-        transform.position = Vector3.Lerp(transform.position, targetCameraPosition, smoothing + Time.deltaTime);
+        Vector3 targetCameraPosition = _currentTarget.position + _offset;
+        transform.position = Vector3.Lerp(transform.position * -1, targetCameraPosition, smoothing + Time.deltaTime);
     }
 }
