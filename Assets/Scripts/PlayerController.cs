@@ -1,45 +1,50 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.InputSystem;
 
 public class PlayerController: MonoBehaviour
 {
-
-    private InputHandler _input;
     
+    [Header("Player Cameras")]
     [SerializeField] private Camera cameraOverworld;
     [SerializeField] private Camera cameraUnderworld;
-    [SerializeField] private float movementSpeed;
-
-    private Camera _activeCamera;
-    private Vector3 _targetVector;
-    private bool _swapped;
     
+    [Header("Player Stats")]
+    [SerializeField] private float movementSpeed;
+    [SerializeField] private float rotateSpeed = 720;
+    
+    [Header("Animators")]
+    [SerializeField] private Animator _animatorCharacterOverworld;
+    [SerializeField] private Animator _animatorCharacterUnderworld;
+
+    [Header("Attack Stats")] 
+    [SerializeField] private float attackSpeed = 1.5f;
+    [SerializeField] private float attackDelay = 0.3f;
+    [SerializeField] private float attackDamage = 1;
+    
+    
+    
+    private bool _swapped;
+    private Vector2 _inputVector;
+    private Vector3 _direction;
+    private Rigidbody _rigidbody;
+    private static readonly int Running = Animator.StringToHash("Running");
+
     private void Awake()
     {
-        _input = GetComponent<InputHandler>();
-        _activeCamera = cameraOverworld;
+        _rigidbody = GetComponent<Rigidbody>();
         cameraOverworld.enabled = true;
         cameraUnderworld.enabled = false;
-        _swapped = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!_swapped)
-        {
-            _targetVector = new Vector3(_input.InputVector.x, 0, _input.InputVector.y);
-        }
-        else
-        {
-            _targetVector = new Vector3(_input.InputVector.x, 0, _input.InputVector.y * -1);
-        }
-        MoveTowardTarget(_targetVector); 
-        RotateFromMouseVector();
-
+        
+        GetDirection(_swapped);
+        Look();
+        
+        // World flip mechanic
         if (Input.GetKeyDown(KeyCode.F) == true)
         {
             if (cameraOverworld.enabled)
@@ -51,38 +56,65 @@ public class PlayerController: MonoBehaviour
             {
                 cameraOverworld.enabled = true;
                 cameraUnderworld.enabled = false;
+
+
             }
+                
+            // Mirrors the rotation along the z,y-plane rotated 45° along the y-axis
+            var lookingDirection = transform.forward;
+            var mirroredLookingDirection = Vector3.Reflect(-lookingDirection, new Vector3(-0.71f, 0, 0.71f));
+            transform.rotation = Quaternion.LookRotation(mirroredLookingDirection);
 
             _swapped = !_swapped;
         }
 
     }
 
-    private void MoveTowardTarget(Vector3 targetVector)
+    private void FixedUpdate()
     {
-        var speed = movementSpeed * Time.deltaTime;
-        targetVector = targetVector.normalized;
-        targetVector = Quaternion.Euler(0, _activeCamera.gameObject.transform.rotation.eulerAngles.y, 0) * targetVector;
-        var transform1 = transform;
-        var targetPosition = transform1.position + targetVector * speed;
-        transform1.position = targetPosition;
+        Move();
     }
     
-    // ReSharper disable Unity.PerformanceAnalysis
-    private void RotateFromMouseVector()
-    {
-        Ray ray;
-        if (_swapped)
+    // Fetches user keyboard input and puts it into _input vector
+    private void GetDirection(bool swapped) {
+        
+        if (!swapped)
         {
-            ray = cameraUnderworld.ScreenPointToRay(_input.MousePosition);
+            _direction = new Vector3(_inputVector.x, 0, _inputVector.y).normalized;
         }
         else
         {
-            ray = cameraOverworld.ScreenPointToRay(_input.MousePosition);
+            _direction = new Vector3(_inputVector.x, 0, -_inputVector.y).normalized;
         }
-        if (!Physics.Raycast(ray, out RaycastHit hitInfo, maxDistance: 300f)) return;
-        var target = hitInfo.point;
-        target.y = transform.position.y;
-        transform.LookAt(target);
+    }
+
+    public void GetInput(InputAction.CallbackContext context)
+    {
+        _inputVector = context.ReadValue<Vector2>();
+    }
+
+    // Rotates the player character's rotation towards the current input vector 
+    private void Look()
+    {
+        if (_direction == Vector3.zero)
+        {
+            _animatorCharacterOverworld.SetBool(Running, false);
+            _animatorCharacterUnderworld.SetBool(Running, false);
+            return;
+        }
+        
+        _animatorCharacterOverworld.SetBool(Running, true);
+        _animatorCharacterUnderworld.SetBool(Running, true);
+        var position = transform.position;
+        var relative = (position + _direction.ToIso()) - position;
+        var rot = Quaternion.LookRotation(relative, Vector3.up);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, rot, rotateSpeed * Time.deltaTime);
+    }
+
+    // Moves along the current forward vector of the player character
+    private void Move()
+    {
+        var transform1 = transform;
+        _rigidbody.MovePosition(transform1.position + transform1.forward * (_direction.normalized.magnitude * movementSpeed * Time.deltaTime));
     }
 }

@@ -42,7 +42,6 @@ public class EnemyBehaviour : MonoBehaviour
             animator.SetBool("attacking", true);
             animator.SetBool("moving", false);
             attacking = true;
-            Debug.Log("Attack start");
             StartCoroutine(AttackingRoutine());
         }
     }
@@ -61,7 +60,6 @@ public class EnemyBehaviour : MonoBehaviour
 
     private IEnumerator AttackingRoutine()
     {
-        Debug.Log("Attack start coroutine");
         yield return new WaitForSeconds(attackCooldown);
         //TODO: Add attack
         animator.SetBool("attacking", false);
