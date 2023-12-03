@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class EnemyBehaviour : MonoBehaviour
 {
+    [Header("Stats")] 
+    [SerializeField] private EnemyData data;
+    [SerializeField] private int damage;
+    
     [Header("Movement")]
     [SerializeField]  private Transform target;
     private Rigidbody rb;
@@ -19,6 +23,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     void Start()
     {
+        SetEnemyValues();
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         if (target == null)
@@ -41,6 +46,7 @@ public class EnemyBehaviour : MonoBehaviour
         {
             animator.SetBool("attacking", true);
             animator.SetBool("moving", false);
+            rb.velocity = Vector3.zero;
             attacking = true;
             StartCoroutine(AttackingRoutine());
         }
@@ -55,6 +61,13 @@ public class EnemyBehaviour : MonoBehaviour
         rb.angularVelocity = Vector3.Cross(direction, transform.forward) * -rotateSpeed;
 
         rb.velocity = transform.forward * speed;
+    }
+
+    private void SetEnemyValues()
+    {
+        GetComponent<Health>().SetHealth(data.hp, data.hp);
+        damage = data.damage;
+        speed = data.speed;
     }
 
 

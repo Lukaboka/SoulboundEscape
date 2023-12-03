@@ -22,13 +22,12 @@ public class PlayerController: MonoBehaviour
     [SerializeField] private float attackDelay = 0.3f;
     [SerializeField] private float attackDamage = 1;
     
-    
-    
     private bool _swapped;
     private Vector2 _inputVector;
     private Vector3 _direction;
     private Rigidbody _rigidbody;
     private static readonly int Running = Animator.StringToHash("Running");
+    private static readonly int Attacking = Animator.StringToHash("Attacking");
 
     private void Awake()
     {
@@ -86,6 +85,23 @@ public class PlayerController: MonoBehaviour
         {
             _direction = new Vector3(_inputVector.x, 0, -_inputVector.y).normalized;
         }
+    }
+
+    public void Attack()
+    {
+        if (_swapped && !_animatorCharacterUnderworld.GetBool(Attacking))
+        {
+            _animatorCharacterUnderworld.SetBool(Attacking, true);
+        }
+        else if (!_swapped && !_animatorCharacterOverworld.GetBool(Attacking))
+        {
+            _animatorCharacterOverworld.SetBool(Attacking, true);
+        }
+    }
+
+    private void FinishAttack()
+    {
+        
     }
 
     public void GetInput(InputAction.CallbackContext context)
