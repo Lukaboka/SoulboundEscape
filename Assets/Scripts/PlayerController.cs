@@ -1,5 +1,6 @@
-
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
 public class PlayerController: MonoBehaviour
@@ -17,7 +18,8 @@ public class PlayerController: MonoBehaviour
     [SerializeField] private Animator _animatorCharacterOverworld;
     [SerializeField] private Animator _animatorCharacterUnderworld;
 
-    [Header("Attack Stats")] 
+    [Header("Attack Stats")]
+    [SerializeField] private PlayerCombat player;
     [SerializeField] private float attackSpeed = 1.5f;
     [SerializeField] private float attackDelay = 0.3f;
     [SerializeField] private float attackDamage = 1;
@@ -28,6 +30,10 @@ public class PlayerController: MonoBehaviour
     private Rigidbody _rigidbody;
     private static readonly int Running = Animator.StringToHash("Running");
     private static readonly int Attacking = Animator.StringToHash("Attacking");
+    private static readonly int Dashing = Animator.StringToHash("Dashing");
+    private static readonly int Dead = Animator.StringToHash("Dead");
+
+    private bool _dead = false;
 
     private void Awake()
     {
@@ -39,6 +45,7 @@ public class PlayerController: MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_dead) { return; }
         
         GetDirection(_swapped);
         Look();
@@ -67,13 +74,43 @@ public class PlayerController: MonoBehaviour
             _swapped = !_swapped;
         }
 
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Dash();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            Attack();
+        }
+
     }
 
     private void FixedUpdate()
     {
         Move();
     }
-    
+
+    private void Dash()
+    {   
+        movementSpeed += 2;
+        if (_swapped && !_animatorCharacterUnderworld.GetBool(Attacking))
+        {
+            _animatorCharacterUnderworld.SetTrigger(Dashing);
+        }
+        else if (!_swapped && !_animatorCharacterOverworld.GetBool(Attacking))
+        {
+            _animatorCharacterOverworld.SetTrigger(Dashing);
+        }
+        StartCoroutine(FinishDash(1f));
+    }
+
+    private IEnumerator FinishDash(float interval)
+    {
+        yield return new WaitForSeconds(interval);
+        movementSpeed -= 2;
+    }
+
     // Fetches user keyboard input and puts it into _input vector
     private void GetDirection(bool swapped) {
         
@@ -89,6 +126,7 @@ public class PlayerController: MonoBehaviour
 
     public void Attack()
     {
+        player.Attack(true);
         if (_swapped && !_animatorCharacterUnderworld.GetBool(Attacking))
         {
             _animatorCharacterUnderworld.SetBool(Attacking, true);
@@ -97,11 +135,15 @@ public class PlayerController: MonoBehaviour
         {
             _animatorCharacterOverworld.SetBool(Attacking, true);
         }
+        StartCoroutine(FinishAttack(1f));
     }
 
-    private void FinishAttack()
+    private IEnumerator FinishAttack(float attackInterval)
     {
-        
+        yield return new WaitForSeconds(attackInterval);
+        player.Attack(false);
+        _animatorCharacterUnderworld.SetBool(Attacking, false);
+        _animatorCharacterOverworld.SetBool(Attacking, false);
     }
 
     public void GetInput(InputAction.CallbackContext context)
