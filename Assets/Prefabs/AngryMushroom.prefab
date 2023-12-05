@@ -104,7 +104,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 84
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!114 &4075843442535242633
 MonoBehaviour:
@@ -118,8 +118,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e40dd9b6553ee5a43a4f190b1f665870, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 0}
-  damage: 0
   target: {fileID: 0}
   speed: 2
   rotateSpeed: 20
@@ -144,5 +142,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 3.8000422, z: 1}
-  m_Center: {x: 0, y: 1.8909268, z: 0}
+  m_Size: {x: 1, y: 0.97109634, z: 1}
+  m_Center: {x: 0, y: 0.476454, z: 0}
