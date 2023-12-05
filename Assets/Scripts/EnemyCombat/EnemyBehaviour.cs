@@ -12,11 +12,18 @@ public class EnemyBehaviour : MonoBehaviour
     [Header("Stats")] 
     [SerializeField] private EnemyData data;
     [SerializeField] private int damage;
+<<<<<<< HEAD:Assets/Scripts/EnemyBehaviour.cs
+
+    [Header("Movement")]
+    [SerializeField] private GameObject player;
+    private Rigidbody rb;
+=======
     private bool isDead = false;
     
     [Header("Movement")]
     [SerializeField]  private Transform target;
     [SerializeField] private float visionRange;
+>>>>>>> 73418797fc31ca0043d09d645f6abe14ec7cbd5d:Assets/Scripts/EnemyCombat/EnemyBehaviour.cs
     [SerializeField] private float speed = 2f;
     [SerializeField] private float rotateSpeed = 20f;
 
@@ -25,9 +32,27 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] private float attackCooldown = 5f;
     private bool attacking = false;
 
+<<<<<<< HEAD:Assets/Scripts/EnemyBehaviour.cs
+    private Animator animator;
+
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
+    }
+
     void Start()
     {
         SetEnemyValues();
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
+=======
+    void Start()
+    {
+        SetEnemyValues();
+>>>>>>> 73418797fc31ca0043d09d645f6abe14ec7cbd5d:Assets/Scripts/EnemyCombat/EnemyBehaviour.cs
     }
 
     void FixedUpdate()
@@ -36,6 +61,9 @@ public class EnemyBehaviour : MonoBehaviour
         if(attacking) { return; }
 
         //TODO: Add conditions for the Movement
+<<<<<<< HEAD:Assets/Scripts/EnemyBehaviour.cs
+        float distance = Vector3.Distance(player.transform.position, rb.position);
+=======
         float distance = Vector3.Distance(target.position, rb.position);
 
         if (visionRange < distance) {
@@ -43,6 +71,7 @@ public class EnemyBehaviour : MonoBehaviour
             return;
         }
 
+>>>>>>> 73418797fc31ca0043d09d645f6abe14ec7cbd5d:Assets/Scripts/EnemyCombat/EnemyBehaviour.cs
         if (distance > attackRange)
         {
             animator.SetBool("moving", true);
@@ -70,7 +99,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     private void Move()
     {
-        Vector3 direction = target.position - rb.position;
+        Vector3 direction = player.transform.position - rb.position;
 
         direction.Normalize();
 
