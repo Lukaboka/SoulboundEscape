@@ -6,11 +6,11 @@ public class EnemyHitArea : MonoBehaviour
 {
     [SerializeField] private bool isPlayerInHitArea = false;
 
-    private PlayerCombat _player;
+    private Health _player;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<PlayerCombat>(out PlayerCombat player))
+        if (other.TryGetComponent<Health>(out Health player))
         {
             _player = player;
             isPlayerInHitArea = true;
@@ -19,14 +19,14 @@ public class EnemyHitArea : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent<PlayerCombat>(out PlayerCombat player))
+        if (other.TryGetComponent<Health>(out Health player))
         {
             _player = null;
             isPlayerInHitArea = false;
         }
     }
 
-    public PlayerCombat GetIfPlayerIsInHitbox()
+    public Health GetIfPlayerIsInHitbox()
     {
         return _player;
     }
