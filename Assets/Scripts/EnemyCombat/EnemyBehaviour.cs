@@ -12,11 +12,6 @@ public class EnemyBehaviour : MonoBehaviour
     [Header("Stats")] 
     [SerializeField] private EnemyData data;
     [SerializeField] private int damage;
-
-    [Header("Movement")]
-    [SerializeField] private GameObject player;
-    private Rigidbody rb;
-    private bool isDead = false;
     
     [Header("Movement")]
     [SerializeField] private GameObject player;
@@ -25,6 +20,7 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] private float visionRange;
     [SerializeField] private float speed = 2f;
     [SerializeField] private float rotateSpeed = 20f;
+    private bool isDead = false;
 
     [Header("Attack")]
     [SerializeField] private float attackRange = 2f;
