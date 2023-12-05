@@ -7,9 +7,9 @@ public class EnemyBehaviour : MonoBehaviour
     [Header("Stats")] 
     [SerializeField] private EnemyData data;
     [SerializeField] private int damage;
-    
+
     [Header("Movement")]
-    [SerializeField]  private Transform target;
+    [SerializeField] private GameObject player;
     private Rigidbody rb;
     [SerializeField] private float speed = 2f;
     [SerializeField] private float rotateSpeed = 20f;
@@ -21,21 +21,25 @@ public class EnemyBehaviour : MonoBehaviour
 
     private Animator animator;
 
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
+    }
+
     void Start()
     {
         SetEnemyValues();
-        rb = GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>();
-        if (target == null)
+        if (player == null)
         {
-            target = GameObject.FindGameObjectWithTag("Player").transform;
+            player = GameObject.FindGameObjectWithTag("Player");
         }
     }
 
     void FixedUpdate()
     {
         //TODO: Add conditions for the Movement
-        float distance = Vector3.Distance(target.position, rb.position);
+        float distance = Vector3.Distance(player.transform.position, rb.position);
         if (distance > attackRange)
         {
             animator.SetBool("moving", true);
@@ -54,7 +58,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     private void Move()
     {
-        Vector3 direction = target.position - rb.position;
+        Vector3 direction = player.transform.position - rb.position;
 
         direction.Normalize();
 
