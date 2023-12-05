@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -396,6 +396,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4075843442535242633, guid: 539abfcb81179db438895588fc8fc1ad, type: 3}
+      propertyPath: data
+      value: 
+      objectReference: {fileID: 11400000, guid: abb989f7e4a05004695ea22d8e2e0dca, type: 2}
+    - target: {fileID: 4075843442535242633, guid: 539abfcb81179db438895588fc8fc1ad, type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 2007648989}
@@ -698,6 +702,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4075843442535242633, guid: 539abfcb81179db438895588fc8fc1ad, type: 3}
+      propertyPath: data
+      value: 
+      objectReference: {fileID: 11400000, guid: abb989f7e4a05004695ea22d8e2e0dca, type: 2}
     - target: {fileID: 4075843442535242633, guid: 539abfcb81179db438895588fc8fc1ad, type: 3}
       propertyPath: target
       value: 
@@ -1468,6 +1476,7 @@ GameObject:
   - component: {fileID: 1561661967}
   - component: {fileID: 1561661968}
   - component: {fileID: 1561661969}
+  - component: {fileID: 1561661970}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1610,6 +1619,22 @@ MonoBehaviour:
   attackSpeed: 1.5
   attackDelay: 0.3
   attackDamage: 1
+--- !u!114 &1561661970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1561661961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e71b91566d9640bc91e7b035569cfca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 03d8ff5b3fdcdc44eb93d02d976538f4, type: 2}
+  damage: 10
+  attackRange: 2
+  attackCooldown: 5
 --- !u!4 &1619732213 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9033896190240364366, guid: db1c4f34b77030a4c8e1f25e0421541b, type: 3}
