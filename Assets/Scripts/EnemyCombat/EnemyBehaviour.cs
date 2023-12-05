@@ -15,7 +15,6 @@ public class EnemyBehaviour : MonoBehaviour
     
     [Header("Movement")]
     [SerializeField] private GameObject player;
-    private Rigidbody rb;
     [SerializeField]  private Transform target;
     [SerializeField] private float visionRange;
     [SerializeField] private float speed = 2f;
@@ -27,7 +26,6 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] private float attackCooldown = 5f;
     private bool attacking = false;
 
-    private Animator animator;
 
     void Awake()
     {
