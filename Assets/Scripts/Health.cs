@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
+    [SerializeField] private PlayerController _player;
+    [SerializeField] private EnemyBehaviour _enemy;
 
     [SerializeField] private int health = 100;
     [SerializeField] private Image healthBar;
@@ -58,7 +60,9 @@ public class Health : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("I am Dead!");
-        Destroy(gameObject);
+        if (_player) { _player.onDeathTrigger(); }
+        if (_enemy)  { _enemy.onDeathTrigger(); }
+
+        Destroy(gameObject, 2f);
     }
 }
