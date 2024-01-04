@@ -13,11 +13,17 @@ public class NewBehaviourScript : MonoBehaviour
     [SerializeField] 
     private GameObject[] underworldElements;
 
+    [SerializeField] 
+    private GameObject invisibleWall;
+
     [SerializeField] private int height = 10;
     [SerializeField] private int width = 10;
     [SerializeField] private int spacingOffset = 1;
     [SerializeField] private int smoothingFactor = 5;
     [SerializeField] private int fillPercent = 80;
+
+    private GameObject[,] _overworldTileMap;
+    private GameObject[,] _underworldTileMap;
 
 
     // Start is called before the first frame update
@@ -26,14 +32,15 @@ public class NewBehaviourScript : MonoBehaviour
 
         int [,] map = GenerateCellularAutomata(width, height, fillPercent, true, spacingOffset);
 
-        GameObject[,] tileMap = new GameObject[width / spacingOffset, height / spacingOffset];
+        _overworldTileMap = new GameObject[width / spacingOffset, height / spacingOffset];
+        _underworldTileMap = new GameObject[width / spacingOffset, height / spacingOffset];
 
-        SmoothMooreCellularAutomata(map, true, smoothingFactor);
+        map = SmoothMooreCellularAutomata(map, true, smoothingFactor);
         
-        RenderMap(map, tileMap);
+        RenderMap(map, _overworldTileMap, _underworldTileMap);
     }
 
-    public void RenderMap(int[,] map, GameObject[,] tileMap)
+    public void RenderMap(int[,] map, GameObject[,] overworldTileMap, GameObject[,] underworldTileMap)
     {
         Transform pivot = transform;
         Vector3 pivotPosition = pivot.position;
@@ -43,10 +50,21 @@ public class NewBehaviourScript : MonoBehaviour
             {
                 if (map[x, z] == 0)
                 {
-                    tileMap[x, z] = Instantiate(overworldElements[Random.Range(0, overworldElements.Length - 1)],
+                    overworldTileMap[x, z] = Instantiate(overworldElements[Random.Range(0, overworldElements.Length - 1)],
                         new Vector3(x * spacingOffset + pivotPosition.x, 0, z * spacingOffset + pivotPosition.z),
                         Quaternion.Euler(0, 0, 0));
-                    tileMap[x, z].transform.parent = pivot;
+                    overworldTileMap[x, z].transform.parent = pivot;
+                    underworldTileMap[x, z] = Instantiate(underworldElements[Random.Range(0, underworldElements.Length - 1)],
+                        new Vector3(x * spacingOffset + pivotPosition.x, -1, z * spacingOffset + pivotPosition.z),
+                        Quaternion.Euler(0, 0, 0));
+                    underworldTileMap[x, z].transform.parent = pivot;
+                }
+                else
+                {
+                    overworldTileMap[x, z] = Instantiate(invisibleWall,  
+                        new Vector3(x * spacingOffset + pivotPosition.x, 0, z * spacingOffset + pivotPosition.z),
+                        Quaternion.Euler(0, 0, 0));
+                    overworldTileMap[x, z].transform.parent = pivot;
                 }
             }
         }
