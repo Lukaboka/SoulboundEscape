@@ -1,22 +1,23 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class PlayerController: MonoBehaviour
 {
-    
-    [Header("Player Cameras")]
-    [SerializeField] private Camera cameraOverworld;
-    [SerializeField] private Camera cameraUnderworld;
+
+    [Header("Player Cameras")] 
+    [SerializeField] private CameraAnimationHandler cameraAnimationHandler;
     
     [Header("Player Stats")]
     [SerializeField] private float movementSpeed;
     [SerializeField] private float rotateSpeed = 720;
     
     [Header("Animators")]
-    [SerializeField] private Animator _animatorCharacterOverworld;
-    [SerializeField] private Animator _animatorCharacterUnderworld;
+    [SerializeField] private Animator animatorCharacterOverworld;
+    [SerializeField] private Animator animatorCharacterUnderworld;
 
     [Header("Attack Stats")]
     [SerializeField] private PlayerCombat player;
@@ -38,8 +39,6 @@ public class PlayerController: MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
-        cameraOverworld.enabled = true;
-        cameraUnderworld.enabled = false;
     }
 
     // Update is called once per frame
@@ -53,24 +52,11 @@ public class PlayerController: MonoBehaviour
         // World flip mechanic
         if (Input.GetKeyDown(KeyCode.F) == true)
         {
-            player.ChangeActiveWorld();
-            if (cameraOverworld.enabled)
+            if (!cameraAnimationHandler.IsInAnimation())
             {
-                cameraOverworld.enabled = false;
-                cameraUnderworld.enabled = true;
+                player.ChangeActiveWorld();
+                cameraAnimationHandler.SwapWorld();
             }
-            else
-            {
-                cameraOverworld.enabled = true;
-                cameraUnderworld.enabled = false;
-            }
-                
-            // Mirrors the rotation along the z,y-plane rotated 45° along the y-axis
-            var lookingDirection = transform.forward;
-            var mirroredLookingDirection = Vector3.Reflect(-lookingDirection, new Vector3(-0.71f, 0, 0.71f));
-            transform.rotation = Quaternion.LookRotation(mirroredLookingDirection);
-
-            _swapped = !_swapped;
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -94,13 +80,13 @@ public class PlayerController: MonoBehaviour
     {
         _rigidbody.velocity = Vector3.zero;
         movementSpeed += 2;
-        if (_swapped && !_animatorCharacterUnderworld.GetBool(Attacking))
+        if (_swapped && !animatorCharacterUnderworld.GetBool(Attacking))
         {
-            _animatorCharacterUnderworld.SetTrigger(Dashing);
+            animatorCharacterUnderworld.SetTrigger(Dashing);
         }
-        else if (!_swapped && !_animatorCharacterOverworld.GetBool(Attacking))
+        else if (!_swapped && !animatorCharacterOverworld.GetBool(Attacking))
         {
-            _animatorCharacterOverworld.SetTrigger(Dashing);
+            animatorCharacterOverworld.SetTrigger(Dashing);
         }
         StartCoroutine(FinishDash(1f));
     }
@@ -109,6 +95,16 @@ public class PlayerController: MonoBehaviour
     {
         yield return new WaitForSeconds(interval);
         movementSpeed -= 2;
+    }
+
+    public void AdjustControls()
+    {
+        // Mirrors the rotation along the z,y-plane rotated 45° along the y-axis
+        var lookingDirection = transform.forward;
+        var mirroredLookingDirection = Vector3.Reflect(-lookingDirection, new Vector3(-0.71f, 0, 0.71f));
+        transform.rotation = Quaternion.LookRotation(mirroredLookingDirection);
+
+        _swapped = !_swapped;
     }
 
     // Fetches user keyboard input and puts it into _input vector
@@ -127,13 +123,13 @@ public class PlayerController: MonoBehaviour
     public void Attack()
     {
         player.Attack(true);
-        if (_swapped && !_animatorCharacterUnderworld.GetBool(Attacking))
+        if (_swapped && !animatorCharacterUnderworld.GetBool(Attacking))
         {
-            _animatorCharacterUnderworld.SetBool(Attacking, true);
+            animatorCharacterUnderworld.SetBool(Attacking, true);
         }
-        else if (!_swapped && !_animatorCharacterOverworld.GetBool(Attacking))
+        else if (!_swapped && !animatorCharacterOverworld.GetBool(Attacking))
         {
-            _animatorCharacterOverworld.SetBool(Attacking, true);
+            animatorCharacterOverworld.SetBool(Attacking, true);
         }
         StartCoroutine(FinishAttack(1f));
     }
@@ -142,8 +138,8 @@ public class PlayerController: MonoBehaviour
     {
         yield return new WaitForSeconds(attackInterval);
         player.Attack(false);
-        _animatorCharacterUnderworld.SetBool(Attacking, false);
-        _animatorCharacterOverworld.SetBool(Attacking, false);
+        animatorCharacterUnderworld.SetBool(Attacking, false);
+        animatorCharacterOverworld.SetBool(Attacking, false);
     }
 
     public void GetInput(InputAction.CallbackContext context)
@@ -156,13 +152,13 @@ public class PlayerController: MonoBehaviour
     {
         if (_direction == Vector3.zero)
         {
-            _animatorCharacterOverworld.SetBool(Running, false);
-            _animatorCharacterUnderworld.SetBool(Running, false);
+            animatorCharacterOverworld.SetBool(Running, false);
+            animatorCharacterUnderworld.SetBool(Running, false);
             return;
         }
         
-        _animatorCharacterOverworld.SetBool(Running, true);
-        _animatorCharacterUnderworld.SetBool(Running, true);
+        animatorCharacterOverworld.SetBool(Running, true);
+        animatorCharacterUnderworld.SetBool(Running, true);
         var position = transform.position;
         var relative = (position + _direction.ToIso()) - position;
         var rot = Quaternion.LookRotation(relative, Vector3.up);
