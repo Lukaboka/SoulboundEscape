@@ -342,20 +342,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec5e9476db2780a41834549ad835be0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorTexture: {fileID: 2800000, guid: 0976e7bd83952124e8d9fc18e8457525, type: 3}
   startingScene: CombatScene
-  cursorMode: 1
   storyScreenFade: {fileID: 1845771481}
   transition: {fileID: 597370411}
-  wordDelay: 0.08
+  wordDelay: 0.04
   sentenceDelay: 0.1
-  skipDelay: 0.001
-  fullText: 'Bla bla bla bla bla bla bla bla bla bla bla bla.
+  skipDelay: 0.00001
+  slide01Text: A famous mercenary and monster hunter who has been in this line of
+    work for way too long.
+  slide01: {fileID: 21300000, guid: ad072741905d7bf4fb97be2c3268d42c, type: 3}
+  slide02Text: 'One last job to finally lay down your arms and live a pieceful life.
 
 
-    Ka ka ka ka ka
-    ka ka ka ka ka ka k ak ak aka akakkakan aakklakakakakaka.'
-  record: 0
+    Just
+    one last contract to finish it all.'
+  slide02: {fileID: 21300000, guid: 57b57650c9890794e9f54deddddf07ef, type: 3}
+  slide03Text: 'You finally track down and encounter your mark: a powerful demon
+    that would turn out to be more than just another day on the job.
+
+
+    When you
+    are finally about to land the finishing blow on the demon
+
+    ...'
+  slide03: {fileID: 21300000, guid: bee0fccef75fe3149bd490a8eed56dae, type: 3}
+  slide04Text: 'It casts one last spell and entraps you into a strange world.
+
+
+    A
+    world where the material world co-exists with the demonic underworld and where
+    reason ceases to exist.'
+  slide04: {fileID: 21300000, guid: c203df9d1ef96d7448d52b9e0d9c85e4, type: 3}
+  slide05Text: 'You feel as if a part of you was ripped out of your body, but is
+    somehow still connected to it.
+
+
+    Only time will tell if you can survive this
+    predicament and fulfill your last job or lose your body and soul in the process.'
+  slide05: {fileID: 21300000, guid: 697dfcbe8a11d79459356e714e3e44cc, type: 3}
+  currentScreen: 1
 --- !u!1 &545814260
 GameObject:
   m_ObjectHideFlags: 0
@@ -769,7 +794,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.11764707, g: 0.098039225, b: 0.14509805, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1188,10 +1213,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1845771480}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 360, y: -160}
-  m_SizeDelta: {x: 40, y: 40}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -299.6, y: 96.3}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1318265239
 MonoBehaviour:
@@ -1269,8 +1294,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 58c4e7a9790839541896ffe129f33770, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1439,7 +1464,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1845771480
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1495,16 +1520,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: ad072741905d7bf4fb97be2c3268d42c, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
