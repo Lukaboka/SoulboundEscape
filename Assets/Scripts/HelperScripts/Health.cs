@@ -60,7 +60,7 @@ public class Health : MonoBehaviour
 
     private void Die()
     {
-        if (_player) { _player.onDeathTrigger(); }
+        if (_player) { _player.OnDeathTrigger(); }
         if (_enemy)  { _enemy.onDeathTrigger(); }
 
         Destroy(gameObject, 2f);

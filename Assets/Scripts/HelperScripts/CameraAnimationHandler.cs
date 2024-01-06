@@ -14,14 +14,20 @@ public class CameraAnimationHandler : MonoBehaviour
 
     [Header("Camera Animation Controller")] 
     [SerializeField] private Animator cameraController;
+    
+    [Header("Light Sources")] 
+    [SerializeField] private Light overworldLight;
+    [SerializeField] private Light underworldLight;
 
     private static readonly int InOverworld = Animator.StringToHash("inOverworld");
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         cameraOverworld.enabled = true;
         cameraUnderworld.enabled = false;
+        overworldLight.enabled = true;
+        underworldLight.enabled = false;
     }
 
     public void SwapWorld()
@@ -42,11 +48,16 @@ public class CameraAnimationHandler : MonoBehaviour
         {
             cameraOverworld.enabled = false;
             cameraUnderworld.enabled = true;
+            overworldLight.enabled = false;
+            underworldLight.enabled = true;
+
         }
         else
         {
             cameraOverworld.enabled = true;
             cameraUnderworld.enabled = false;
+            overworldLight.enabled = true;
+            underworldLight.enabled = false;
         }
     }
 
@@ -64,5 +75,11 @@ public class CameraAnimationHandler : MonoBehaviour
     public void AdjustControls()
     {
         playerController.AdjustControls();
+    }
+
+    public void InitializeCameras()
+    {
+        cameraOverworld.enabled = true;
+        cameraUnderworld.enabled = false;
     }
 }

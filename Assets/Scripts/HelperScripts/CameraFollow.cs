@@ -7,19 +7,19 @@ public class CameraFollow : MonoBehaviour
 
     [SerializeField] private Transform target;
     [SerializeField] private float smoothing = 5f;
+    [SerializeField] private Vector3 offset;
     
-    private Vector3 _offset;
     private Transform _currentTarget;
 
     private void Awake()
     {
         _currentTarget = target;
-        _offset = transform.position - _currentTarget.position;
     }
     
     void LateUpdate()
     {
-        Vector3 targetCameraPosition = _currentTarget.position + _offset;
+        Vector3 targetCameraPosition = _currentTarget.position + offset;
         transform.position = Vector3.Lerp(transform.position * -1, targetCameraPosition, smoothing + Time.deltaTime);
     }
+
 }
