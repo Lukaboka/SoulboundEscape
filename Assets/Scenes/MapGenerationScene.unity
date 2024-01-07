@@ -1205,7 +1205,7 @@ MonoBehaviour:
   rockOptionCount: 7
   treeDensityPercent: 20
   plantDensityPercent: 10
-  rockDensityPercent: 5
+  rockDensityPercent: 10
   height: 100
   width: 100
   spacingOffset: 2

@@ -309,7 +309,7 @@ public class NewBehaviourScript : MonoBehaviour
                 GameObject underworldDummyObject = Instantiate(underworldEnvironmentObjects[randomObject],
                     new Vector3(location.x * spacingOffset + anchorPosition.x + Random.Range(0, 1.5f), -1.5f, 
                         location.z * spacingOffset + anchorPosition.z + Random.Range(0, 1.5f)),
-                    Quaternion.Euler(-90, randomRotation, 180));
+                    Quaternion.Euler(90, randomRotation, 180));
                 
                 _underworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(underworldEnvironmentObjects[randomObject],
                     new Vector3(location.x * spacingOffset + anchorPosition.x + randomOffsetX, -99.5f, 
@@ -318,7 +318,7 @@ public class NewBehaviourScript : MonoBehaviour
                 GameObject overworldDummyObject = Instantiate(overworldEnvironmentObjects[randomObject],
                     new Vector3(location.x * spacingOffset + anchorPosition.x + Random.Range(0, 1.5f), -101.5f, 
                         location.z * spacingOffset + anchorPosition.z + Random.Range(0, 1.5f)),
-                    Quaternion.Euler(-90, randomRotation, 180));
+                    Quaternion.Euler(90, randomRotation, 180));
                     
                 _overworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
                 _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
@@ -338,7 +338,7 @@ public class NewBehaviourScript : MonoBehaviour
                 GameObject underworldDummyObject = Instantiate(underworldEnvironmentObjects[randomObject],
                     new Vector3(location.x * spacingOffset + anchorPosition.x + Random.Range(0, 1.5f), -1.5f, 
                         location.z * spacingOffset + anchorPosition.z + Random.Range(0, 1.5f)),
-                    Quaternion.Euler(-90, randomRotation, 180));
+                    Quaternion.Euler(90, randomRotation, 180));
                 
                 _underworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(underworldEnvironmentObjects[randomObject],
                     new Vector3(location.x * spacingOffset + anchorPosition.x + randomOffsetX, -99.5f, 
@@ -347,7 +347,7 @@ public class NewBehaviourScript : MonoBehaviour
                 GameObject overworldDummyObject = Instantiate(overworldEnvironmentObjects[randomObject],
                     new Vector3(location.x * spacingOffset + anchorPosition.x + Random.Range(0, 1.5f), -101.5f, 
                         location.z * spacingOffset + anchorPosition.z + Random.Range(0, 1.5f)),
-                    Quaternion.Euler(-90, randomRotation, 180));
+                    Quaternion.Euler(90, randomRotation, 180));
                     
                 _overworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
                 _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
@@ -370,7 +370,7 @@ public class NewBehaviourScript : MonoBehaviour
                 GameObject underworldDummyObject = Instantiate(underworldEnvironmentObjects[randomObject],
                     new Vector3(location.x * spacingOffset + anchorPosition.x + Random.Range(0, 1.5f), -1.5f,
                         location.z * spacingOffset + anchorPosition.z + Random.Range(0, 1.5f)),
-                    Quaternion.Euler(-90, randomRotation, 180));
+                    Quaternion.Euler(90, randomRotation, 180));
 
                 _underworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(
                     underworldEnvironmentObjects[randomObject],
@@ -380,7 +380,7 @@ public class NewBehaviourScript : MonoBehaviour
                 GameObject overworldDummyObject = Instantiate(overworldEnvironmentObjects[randomObject],
                     new Vector3(location.x * spacingOffset + anchorPosition.x + Random.Range(0, 1.5f), -101.5f,
                         location.z * spacingOffset + anchorPosition.z + Random.Range(0, 1.5f)),
-                    Quaternion.Euler(-90, randomRotation, 180));
+                    Quaternion.Euler(90, randomRotation, 180));
 
                 _overworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
                 _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
