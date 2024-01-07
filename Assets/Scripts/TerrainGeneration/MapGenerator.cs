@@ -19,6 +19,15 @@ public class NewBehaviourScript : MonoBehaviour
 
     [Header("Objects")] 
     [SerializeField] private GameObject[] keyOjects;
+    [SerializeField] private GameObject[] overworldEnvironmentObjects;
+    [SerializeField] private GameObject[] underworldEnvironmentObjects;
+    [SerializeField] private int treeOptionCount;
+    [SerializeField] private int plantOptionCount;
+    [SerializeField] private int rockOptionCount;
+    [SerializeField] private int treeDensityPercent;
+    [SerializeField] private int plantDensityPercent;
+    [SerializeField] private int rockDensityPercent;
+
 
     [Header("Map Parameters")]
     [SerializeField] private int height = 10;
@@ -26,7 +35,7 @@ public class NewBehaviourScript : MonoBehaviour
     [SerializeField] private int spacingOffset = 1;
     [SerializeField] private int smoothingFactor = 5;
     [SerializeField] private int fillPercent = 80;
-    
+
     [Header("Player Objects")]
     [SerializeField] private GameObject player;
     
@@ -37,6 +46,36 @@ public class NewBehaviourScript : MonoBehaviour
     private Transform _anchor;
 
     private Vector3 spawnPoint;
+
+    [System.Serializable]
+    public class Element
+    {
+
+        public string name;
+        [Range(1, 10)] public int density;
+
+        public GameObject[] prefabs;
+
+        public bool CanPlace()
+        {
+
+            // Validation check to see if element can be placed. More detailed calculations can go here, such as checking perlin noise.
+
+            if (Random.Range(0, 10) < density)
+                return true;
+            else
+                return false;
+
+        }
+
+        public GameObject GetRandom()
+        {
+
+            // Return a random GameObject prefab from the prefabs array.
+
+            return prefabs[Random.Range(0, prefabs.Length)];
+        }
+    }
 
     // Start is called before the first frame update
     void Awake()
@@ -53,9 +92,13 @@ public class NewBehaviourScript : MonoBehaviour
         
         RenderMap(map, _overworldTileMap, _underworldTileMap);
         
-        SpawnKeyObjects(map);
+        List<Vector3> validSpawnLocations = new List<Vector3>();
+        
+        validSpawnLocations = SpawnKeyObjects(map, validSpawnLocations);
 
         player.transform.position = new Vector3(spawnPoint.x, player.transform.position.y, spawnPoint.z);
+        
+        PopulateMap(validSpawnLocations);
     }
 
     private void RenderMap(int[,] map, GameObject[,] overworldTileMap, GameObject[,] underworldTileMap)
@@ -173,10 +216,10 @@ public class NewBehaviourScript : MonoBehaviour
         return map;
     }
 
-    private void SpawnKeyObjects(int[,] map)
+    private List<Vector3> SpawnKeyObjects(int[,] map, List<Vector3> validSpawnLocations)
     {
         Vector3 anchorPosition = _anchor.position;
-        List<Vector3> validSpawnLocations = GetValidSpawnLocations(map);
+        validSpawnLocations = GetValidSpawnLocations(map, validSpawnLocations);
 ;
         spawnPoint = validSpawnLocations[Random.Range(0, validSpawnLocations.Count - 1)];
         validSpawnLocations.Remove(spawnPoint);
@@ -204,9 +247,11 @@ public class NewBehaviourScript : MonoBehaviour
                 _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
             }
         }
+
+        return validSpawnLocations;
     }
 
-    private List<Vector3> GetValidSpawnLocations(int[,] map)
+    private List<Vector3> GetValidSpawnLocations(int[,] map, List<Vector3> validSpawnLocations)
     {
         int[,] dilutedMap = (int[,]) map.Clone();
         
@@ -225,8 +270,6 @@ public class NewBehaviourScript : MonoBehaviour
             }
         }
 
-        List<Vector3> validSpawnLocations = new List<Vector3>();
-
         for (int x = 0; x < map.GetUpperBound(0); x++)
         {
             for (int z = 0; z < map.GetUpperBound(1); z++)
@@ -239,5 +282,111 @@ public class NewBehaviourScript : MonoBehaviour
         }
 
         return validSpawnLocations;
+    }
+
+    private void PopulateMap(List<Vector3> validSpawnLocations)
+    {
+        Vector3 anchorPosition = _anchor.position;
+        
+        for (int locationIndex = 0; locationIndex < validSpawnLocations.Count; locationIndex++)
+        {
+            int randomObjectType = Random.Range(0, 100);
+            Vector3 location = validSpawnLocations[locationIndex];
+
+            float randomOffsetX = Random.Range(0, 1.5f);
+            float randomOffsetZ = Random.Range(0, 1.5f);
+            int randomRotation = Random.Range(0, 361);
+            
+            // Spawn trees at treeDensityPercent chance
+            if (randomObjectType >= 0 && randomObjectType < treeDensityPercent)
+            {
+                int randomObject = Random.Range(0, treeOptionCount);
+
+                _overworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(overworldEnvironmentObjects[randomObject],
+                    new Vector3(location.x * spacingOffset + anchorPosition.x + randomOffsetX, 0.5f, 
+                        location.z * spacingOffset + anchorPosition.z + randomOffsetZ),
+                    Quaternion.Euler(-90, randomRotation, 0));
+                GameObject underworldDummyObject = Instantiate(underworldEnvironmentObjects[randomObject],
+                    new Vector3(location.x * spacingOffset + anchorPosition.x + Random.Range(0, 1.5f), -1.5f, 
+                        location.z * spacingOffset + anchorPosition.z + Random.Range(0, 1.5f)),
+                    Quaternion.Euler(-90, randomRotation, 180));
+                
+                _underworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(underworldEnvironmentObjects[randomObject],
+                    new Vector3(location.x * spacingOffset + anchorPosition.x + randomOffsetX, -99.5f, 
+                        location.z * spacingOffset + anchorPosition.z + randomOffsetZ),
+                    Quaternion.Euler(-90, randomRotation, 0));
+                GameObject overworldDummyObject = Instantiate(overworldEnvironmentObjects[randomObject],
+                    new Vector3(location.x * spacingOffset + anchorPosition.x + Random.Range(0, 1.5f), -101.5f, 
+                        location.z * spacingOffset + anchorPosition.z + Random.Range(0, 1.5f)),
+                    Quaternion.Euler(-90, randomRotation, 180));
+                    
+                _overworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
+                _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
+                underworldDummyObject.transform.parent = _anchor;
+                overworldDummyObject.transform.parent = _anchor;
+            }
+            
+            // Spawn plants at plantDensityPercent chance
+            else if (randomObjectType >= treeDensityPercent && randomObjectType < treeDensityPercent + plantDensityPercent)
+            {
+                int randomObject = Random.Range(treeOptionCount, treeOptionCount + plantOptionCount);
+                
+                _overworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(overworldEnvironmentObjects[randomObject],
+                    new Vector3(location.x * spacingOffset + anchorPosition.x + randomOffsetX, 0.5f, 
+                        location.z * spacingOffset + anchorPosition.z + randomOffsetZ),
+                    Quaternion.Euler(-90, randomRotation, 0));
+                GameObject underworldDummyObject = Instantiate(underworldEnvironmentObjects[randomObject],
+                    new Vector3(location.x * spacingOffset + anchorPosition.x + Random.Range(0, 1.5f), -1.5f, 
+                        location.z * spacingOffset + anchorPosition.z + Random.Range(0, 1.5f)),
+                    Quaternion.Euler(-90, randomRotation, 180));
+                
+                _underworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(underworldEnvironmentObjects[randomObject],
+                    new Vector3(location.x * spacingOffset + anchorPosition.x + randomOffsetX, -99.5f, 
+                        location.z * spacingOffset + anchorPosition.z + randomOffsetZ),
+                    Quaternion.Euler(-90, randomRotation, 0));
+                GameObject overworldDummyObject = Instantiate(overworldEnvironmentObjects[randomObject],
+                    new Vector3(location.x * spacingOffset + anchorPosition.x + Random.Range(0, 1.5f), -101.5f, 
+                        location.z * spacingOffset + anchorPosition.z + Random.Range(0, 1.5f)),
+                    Quaternion.Euler(-90, randomRotation, 180));
+                    
+                _overworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
+                _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
+                underworldDummyObject.transform.parent = _anchor;
+                overworldDummyObject.transform.parent = _anchor;
+            }
+            
+            // Spawn rocks at rockDensityPercent chance
+            else if (randomObjectType >= treeDensityPercent + plantDensityPercent && randomObjectType <
+                     treeDensityPercent + plantDensityPercent + rockDensityPercent)
+            {
+                int randomObject = Random.Range(treeOptionCount + plantOptionCount, treeOptionCount + plantOptionCount
+                    + rockOptionCount);
+
+                _overworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(
+                    overworldEnvironmentObjects[randomObject],
+                    new Vector3(location.x * spacingOffset + anchorPosition.x + randomOffsetX, 0.5f,
+                        location.z * spacingOffset + anchorPosition.z + randomOffsetZ),
+                    Quaternion.Euler(-90, randomRotation, 0));
+                GameObject underworldDummyObject = Instantiate(underworldEnvironmentObjects[randomObject],
+                    new Vector3(location.x * spacingOffset + anchorPosition.x + Random.Range(0, 1.5f), -1.5f,
+                        location.z * spacingOffset + anchorPosition.z + Random.Range(0, 1.5f)),
+                    Quaternion.Euler(-90, randomRotation, 180));
+
+                _underworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(
+                    underworldEnvironmentObjects[randomObject],
+                    new Vector3(location.x * spacingOffset + anchorPosition.x + randomOffsetX, -99.5f,
+                        location.z * spacingOffset + anchorPosition.z + randomOffsetZ),
+                    Quaternion.Euler(-90, randomRotation, 0));
+                GameObject overworldDummyObject = Instantiate(overworldEnvironmentObjects[randomObject],
+                    new Vector3(location.x * spacingOffset + anchorPosition.x + Random.Range(0, 1.5f), -101.5f,
+                        location.z * spacingOffset + anchorPosition.z + Random.Range(0, 1.5f)),
+                    Quaternion.Euler(-90, randomRotation, 180));
+
+                _overworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
+                _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
+                underworldDummyObject.transform.parent = _anchor;
+                overworldDummyObject.transform.parent = _anchor;
+            }
+        }
     }
 }
