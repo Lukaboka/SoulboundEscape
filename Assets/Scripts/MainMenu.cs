@@ -55,7 +55,10 @@ public class MainMenu : MonoBehaviour
         skipButton.image.enabled = false;
 
         //Transition
+        storyScreenFade = GameObject.Find("StoryScreen").GetComponent<Animator>();
+        storyScreenFade.enabled = false;
         transition = GameObject.Find("TransitionPaneMainMenu").GetComponent<Animator>();
+        transition.enabled = false;
     }
 
     public void GameStart()
@@ -68,8 +71,12 @@ public class MainMenu : MonoBehaviour
     {
         storyIMG.enabled = true;
         storyText.enabled = true;
+        storyText.outlineWidth = 0.2f;
+        storyText.outlineColor = new Color32(0, 0, 0, 255);
         skipButton.enabled = true;
         skipButton.image.enabled = true;
+        storyScreenFade.enabled = true;
+        StartCoroutine(FadeScreen());
         StartCoroutine(ShowText(slide01Text));
     }
 
@@ -88,12 +95,17 @@ public class MainMenu : MonoBehaviour
                 yield return new WaitForSeconds(skipDelay);
         }
         //storyIMG.color = new Color32(255, 255, 255, 255);
-
-        //storyScreenFade.SetTrigger("Fade");
-        //yield return new WaitForSeconds(1.0f);
     }
 
-    private void changeStoryScreen()
+    IEnumerator FadeScreen()
+    {
+        Debug.Log("Start fading");
+        storyScreenFade.SetTrigger("Fade");
+        yield return new WaitForSeconds(1.0f);
+        storyScreenFade.ResetTrigger("Fade");
+    }
+
+    private void ChangeStoryScreen()
     {
         currentScreen++;
         skipping = false;
@@ -108,8 +120,10 @@ public class MainMenu : MonoBehaviour
             case 3:
                 storyIMG.sprite = slide03;
                 StartCoroutine(ShowText(slide03Text));
+                StartCoroutine(FadeScreen());
                 break;
             case 4:
+                StartCoroutine(FadeScreen());
                 storyIMG.sprite = slide04;
                 StartCoroutine(ShowText(slide04Text));
                 break;
@@ -128,7 +142,7 @@ public class MainMenu : MonoBehaviour
     {
         if (skipping || currentText.Equals(""))
         {
-            changeStoryScreen();
+            ChangeStoryScreen();
         }
         else
         {
@@ -138,6 +152,7 @@ public class MainMenu : MonoBehaviour
 
     IEnumerator GoToMainGame()
     {
+        transition.enabled = true;
         transition.SetTrigger("Start");
         yield return new WaitForSeconds(1.0f);
         Debug.Log("Start Main Game");
