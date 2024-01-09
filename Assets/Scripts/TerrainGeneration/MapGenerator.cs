@@ -21,6 +21,8 @@ public class NewBehaviourScript : MonoBehaviour
     [SerializeField] private GameObject[] keyOjects;
     [SerializeField] private GameObject[] overworldEnvironmentObjects;
     [SerializeField] private GameObject[] underworldEnvironmentObjects;
+    [SerializeField] private GameObject[] overworldEnvironmentDummyObjects;
+    [SerializeField] private GameObject[] underworldEnvironmentDummyObjects;
     [SerializeField] private int treeOptionCount;
     [SerializeField] private int plantOptionCount;
     [SerializeField] private int rockOptionCount;
@@ -45,7 +47,7 @@ public class NewBehaviourScript : MonoBehaviour
     private GameObject[,] _underworldEnvironmentObjects;
     private Transform _anchor;
 
-    private Vector3 spawnPoint;
+    private Vector3 _spawnPoint;
 
     [System.Serializable]
     public class Element
@@ -96,7 +98,9 @@ public class NewBehaviourScript : MonoBehaviour
         
         validSpawnLocations = SpawnKeyObjects(map, validSpawnLocations);
 
-        player.transform.position = new Vector3(spawnPoint.x, player.transform.position.y, spawnPoint.z);
+        Vector3 position = _anchor.position;
+        player.transform.position = new Vector3(_spawnPoint.x * spacingOffset + position.x, 
+            player.transform.position.y, _spawnPoint.z * spacingOffset + position.z);
         
         PopulateMap(validSpawnLocations);
     }
@@ -221,8 +225,8 @@ public class NewBehaviourScript : MonoBehaviour
         Vector3 anchorPosition = _anchor.position;
         validSpawnLocations = GetValidSpawnLocations(map, validSpawnLocations);
 ;
-        spawnPoint = validSpawnLocations[Random.Range(0, validSpawnLocations.Count - 1)];
-        validSpawnLocations.Remove(spawnPoint);
+        _spawnPoint = validSpawnLocations[Random.Range(0, validSpawnLocations.Count)];
+        validSpawnLocations.Remove(_spawnPoint);
 
         for (int items = 0; items < keyOjects.Length; items++)
         {
@@ -230,21 +234,40 @@ public class NewBehaviourScript : MonoBehaviour
             validSpawnLocations.Remove(location);
             
             int coinflip = Random.Range(0, 2);
-            if (coinflip == 0)
+
+            if (items == keyOjects.Length - 1)
             {
-                _overworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(keyOjects[items],
-                    new Vector3(location.x * spacingOffset + anchorPosition.x, 0.75f, 
-                        location.z * spacingOffset + anchorPosition.z), Quaternion.Euler(0, 0, 0));
-                
-                _overworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
+                if (coinflip == 0)
+                {
+                    _overworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(keyOjects[items],
+                        new Vector3(location.x * spacingOffset + anchorPosition.x, 3,
+                            location.z * spacingOffset + anchorPosition.z), Quaternion.Euler(0, 0, 0));
+                }
+                else
+                {
+                    _underworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(keyOjects[items],
+                        new Vector3(location.x * spacingOffset + anchorPosition.x, -97,
+                            location.z * spacingOffset + anchorPosition.z), Quaternion.Euler(0, 0, 0));
+                }
             }
             else
             {
-                _underworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(keyOjects[items],
-                    new Vector3(location.x * spacingOffset + anchorPosition.x, -99.25f, 
-                        location.z * spacingOffset + anchorPosition.z), Quaternion.Euler(0, 0, 0));
-                
-                _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
+                if (coinflip == 0)
+                {
+                    _overworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(keyOjects[items],
+                        new Vector3(location.x * spacingOffset + anchorPosition.x, 0.75f,
+                            location.z * spacingOffset + anchorPosition.z), Quaternion.Euler(0, 0, 0));
+
+                    _overworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
+                }
+                else
+                {
+                    _underworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(keyOjects[items],
+                        new Vector3(location.x * spacingOffset + anchorPosition.x, -99.25f,
+                            location.z * spacingOffset + anchorPosition.z), Quaternion.Euler(0, 0, 0));
+
+                    _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
+                }
             }
         }
 
@@ -293,8 +316,8 @@ public class NewBehaviourScript : MonoBehaviour
             int randomObjectType = Random.Range(0, 100);
             Vector3 location = validSpawnLocations[locationIndex];
 
-            float randomOffsetX = Random.Range(0, 1.5f);
-            float randomOffsetZ = Random.Range(0, 1.5f);
+            float randomOffsetX = Random.Range(0, 1f);
+            float randomOffsetZ = Random.Range(0, 1f);
             int randomRotation = Random.Range(0, 361);
             
             // Spawn trees at treeDensityPercent chance
@@ -306,20 +329,25 @@ public class NewBehaviourScript : MonoBehaviour
                     new Vector3(location.x * spacingOffset + anchorPosition.x + randomOffsetX, 0.5f, 
                         location.z * spacingOffset + anchorPosition.z + randomOffsetZ),
                     Quaternion.Euler(-90, randomRotation, 0));
-                GameObject underworldDummyObject = Instantiate(underworldEnvironmentObjects[randomObject],
+                GameObject underworldDummyObject = Instantiate(underworldEnvironmentDummyObjects[randomObject],
                     new Vector3(location.x * spacingOffset + anchorPosition.x + Random.Range(0, 1.5f), -1.5f, 
                         location.z * spacingOffset + anchorPosition.z + Random.Range(0, 1.5f)),
                     Quaternion.Euler(90, randomRotation, 180));
-                
+
                 _underworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(underworldEnvironmentObjects[randomObject],
                     new Vector3(location.x * spacingOffset + anchorPosition.x + randomOffsetX, -99.5f, 
                         location.z * spacingOffset + anchorPosition.z + randomOffsetZ),
                     Quaternion.Euler(-90, randomRotation, 0));
-                GameObject overworldDummyObject = Instantiate(overworldEnvironmentObjects[randomObject],
+                GameObject overworldDummyObject = Instantiate(overworldEnvironmentDummyObjects[randomObject],
                     new Vector3(location.x * spacingOffset + anchorPosition.x + Random.Range(0, 1.5f), -101.5f, 
                         location.z * spacingOffset + anchorPosition.z + Random.Range(0, 1.5f)),
                     Quaternion.Euler(90, randomRotation, 180));
-                    
+
+                _overworldEnvironmentObjects[(int)location.x, (int)location.z].tag = "Environment";
+                _underworldEnvironmentObjects[(int)location.x, (int)location.z].tag = "Environment";
+                underworldDummyObject.tag = "Environment";
+                overworldDummyObject.tag = "Environment";
+                
                 _overworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
                 _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
                 underworldDummyObject.transform.parent = _anchor;
@@ -335,19 +363,23 @@ public class NewBehaviourScript : MonoBehaviour
                     new Vector3(location.x * spacingOffset + anchorPosition.x + randomOffsetX, 0.5f, 
                         location.z * spacingOffset + anchorPosition.z + randomOffsetZ),
                     Quaternion.Euler(-90, randomRotation, 0));
-                GameObject underworldDummyObject = Instantiate(underworldEnvironmentObjects[randomObject],
+                GameObject underworldDummyObject = Instantiate(underworldEnvironmentDummyObjects[randomObject],
                     new Vector3(location.x * spacingOffset + anchorPosition.x + Random.Range(0, 1.5f), -1.5f, 
                         location.z * spacingOffset + anchorPosition.z + Random.Range(0, 1.5f)),
                     Quaternion.Euler(90, randomRotation, 180));
-                
                 _underworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(underworldEnvironmentObjects[randomObject],
                     new Vector3(location.x * spacingOffset + anchorPosition.x + randomOffsetX, -99.5f, 
                         location.z * spacingOffset + anchorPosition.z + randomOffsetZ),
                     Quaternion.Euler(-90, randomRotation, 0));
-                GameObject overworldDummyObject = Instantiate(overworldEnvironmentObjects[randomObject],
+                GameObject overworldDummyObject = Instantiate(overworldEnvironmentDummyObjects[randomObject],
                     new Vector3(location.x * spacingOffset + anchorPosition.x + Random.Range(0, 1.5f), -101.5f, 
                         location.z * spacingOffset + anchorPosition.z + Random.Range(0, 1.5f)),
                     Quaternion.Euler(90, randomRotation, 180));
+
+                _overworldEnvironmentObjects[(int)location.x, (int)location.z].tag = "Environment";
+                _underworldEnvironmentObjects[(int)location.x, (int)location.z].tag = "Environment";
+                underworldDummyObject.tag = "Environment";
+                overworldDummyObject.tag = "Environment";
                     
                 _overworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
                 _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
@@ -367,20 +399,24 @@ public class NewBehaviourScript : MonoBehaviour
                     new Vector3(location.x * spacingOffset + anchorPosition.x + randomOffsetX, 0.5f,
                         location.z * spacingOffset + anchorPosition.z + randomOffsetZ),
                     Quaternion.Euler(-90, randomRotation, 0));
-                GameObject underworldDummyObject = Instantiate(underworldEnvironmentObjects[randomObject],
+                GameObject underworldDummyObject = Instantiate(underworldEnvironmentDummyObjects[randomObject],
                     new Vector3(location.x * spacingOffset + anchorPosition.x + Random.Range(0, 1.5f), -1.5f,
                         location.z * spacingOffset + anchorPosition.z + Random.Range(0, 1.5f)),
                     Quaternion.Euler(90, randomRotation, 180));
-
                 _underworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(
                     underworldEnvironmentObjects[randomObject],
                     new Vector3(location.x * spacingOffset + anchorPosition.x + randomOffsetX, -99.5f,
                         location.z * spacingOffset + anchorPosition.z + randomOffsetZ),
                     Quaternion.Euler(-90, randomRotation, 0));
-                GameObject overworldDummyObject = Instantiate(overworldEnvironmentObjects[randomObject],
+                GameObject overworldDummyObject = Instantiate(overworldEnvironmentDummyObjects[randomObject],
                     new Vector3(location.x * spacingOffset + anchorPosition.x + Random.Range(0, 1.5f), -101.5f,
                         location.z * spacingOffset + anchorPosition.z + Random.Range(0, 1.5f)),
                     Quaternion.Euler(90, randomRotation, 180));
+
+                _overworldEnvironmentObjects[(int)location.x, (int)location.z].tag = "Environment";
+                _underworldEnvironmentObjects[(int)location.x, (int)location.z].tag = "Environment";
+                underworldDummyObject.tag = "Environment";
+                overworldDummyObject.tag = "Environment";
 
                 _overworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
                 _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;

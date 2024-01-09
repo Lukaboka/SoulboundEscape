@@ -12,8 +12,7 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _ALPHAPREMULTIPLY_ON
-  - _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+  - _ALPHABLEND_ON
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -71,16 +70,16 @@ Material:
     - _GlossMapScale: 0.506
     - _Glossiness: 0.505
     - _GlossyReflections: 1
-    - _Metallic: 0.705
-    - _Mode: 3
+    - _Metallic: 0.586
+    - _Mode: 2
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _SmoothnessTextureChannel: 1
+    - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SrcBlend: 1
+    - _SrcBlend: 5
     - _UVSec: 0
     - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 0.6812386, g: 0.28324133, b: 0.8962264, a: 0.2627451}
+    - _Color: {r: 0.6812386, g: 0.28324133, b: 0.8962264, a: 0.59607846}
     - _EmissionColor: {r: 0.2799295, g: 0.08290317, b: 0.6509434, a: 1}
   m_BuildTextureStacks: []
