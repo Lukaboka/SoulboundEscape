@@ -18,7 +18,7 @@ public class MainMenu : MonoBehaviour
     //Showing text in story
     [SerializeField] private float wordDelay = 0.005f;
     [SerializeField] private float sentenceDelay = 0.1f;
-    [SerializeField] private float skipDelay = 0.00001f;
+    [SerializeField] private float skipDelay = 0.000001f;
     [Multiline(3)]
     [SerializeField] private string slide01Text;
     [SerializeField] private Sprite slide01;
@@ -38,14 +38,17 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private int currentScreen = 1;
 
     //Story init
+    private GameObject menu;
     private Image storyIMG;
     private TextMeshProUGUI storyText;
     private Button skipButton;
     private bool skipping = false;
+    private bool textDisplayed = false;
 
     void Start()
     {
         //Story
+        menu = GameObject.Find("Menu");
         storyIMG = GameObject.Find("StoryScreen").GetComponent<Image>();
         storyText = GameObject.Find("StoryText").GetComponent<TextMeshProUGUI>();
         skipButton = GameObject.Find("SkipButton").GetComponent<Button>();
@@ -63,6 +66,8 @@ public class MainMenu : MonoBehaviour
 
     public void GameStart()
     {
+        menu.SetActive(false);
+        AudioManager.instance.Button();
         Debug.Log("Start Story");
         StartStory();
     }
@@ -94,6 +99,7 @@ public class MainMenu : MonoBehaviour
             else
                 yield return new WaitForSeconds(skipDelay);
         }
+        textDisplayed = true;
         //storyIMG.color = new Color32(255, 255, 255, 255);
     }
 
@@ -109,6 +115,7 @@ public class MainMenu : MonoBehaviour
     {
         currentScreen++;
         skipping = false;
+        textDisplayed = false;
         storyText.text = " ";
         currentText = " ";
         switch (currentScreen)
@@ -124,6 +131,7 @@ public class MainMenu : MonoBehaviour
                 break;
             case 4:
                 StartCoroutine(FadeScreen());
+                AudioManager.instance.Spell();
                 storyIMG.sprite = slide04;
                 StartCoroutine(ShowText(slide04Text));
                 break;
@@ -140,7 +148,8 @@ public class MainMenu : MonoBehaviour
 
     public void SkipButton()
     {
-        if (skipping || currentText.Equals(""))
+        AudioManager.instance.Button();
+        if (skipping || textDisplayed)
         {
             ChangeStoryScreen();
         }
@@ -161,12 +170,14 @@ public class MainMenu : MonoBehaviour
 
     public void GameInfo()
     {
+        AudioManager.instance.Button();
         Debug.Log("Game Info");
     }
 
 
     public void GameExit()
     {
+        AudioManager.instance.Button();
         Debug.Log("Exit Game");
         Application.Quit();
     }
