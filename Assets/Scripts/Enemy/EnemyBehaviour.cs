@@ -9,7 +9,9 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] private Rigidbody rb;
     [SerializeField] private EnemyCombat enemyCombat;
 
-    [Header("Stats")] 
+    [Header("Stats")]
+    [SerializeField] private bool isBoss = false;
+    [SerializeField] private int bossMoveCount = 0;
     [SerializeField] private EnemyData data;
     [SerializeField] private Health _health;
     
@@ -53,16 +55,22 @@ public class EnemyBehaviour : MonoBehaviour
         {
             animator.SetBool("moving", true);
             Move();
+        } else {
+            animator.SetBool("moving", false);
         }
+
 
         if (distance <= attackRange)
         {
-            Debug.Log("Attack!");
             attacking = true;
-            animator.SetBool("attacking", true);
-            animator.SetBool("moving", false);
-            rb.velocity = Vector3.zero;
-            StartCoroutine(AttackingRoutine());
+            if (isBoss) { BossAttack(); }
+            else
+            {
+                animator.SetBool("attacking", true);
+                animator.SetBool("moving", false);
+                rb.velocity = Vector3.zero;
+                StartCoroutine(AttackingRoutine());
+            }
         }
         
     }
@@ -97,7 +105,6 @@ public class EnemyBehaviour : MonoBehaviour
         yield return new WaitForSeconds(.25f);
         enemyCombat.Attack();
         yield return new WaitForSeconds(.75f);
-        //TODO: Add attack
         animator.SetBool("attacking", false);
         yield return new WaitForSeconds(attackCooldown - 1f);
         attacking = false;
@@ -105,11 +112,33 @@ public class EnemyBehaviour : MonoBehaviour
 
     public void GotHit()
     {
-        animator.SetTrigger("Hit");
+        animator.SetTrigger("GetHit");
     }
 
     public void onDeathTrigger()
     {
         isDead = true;
+    }
+
+    private void BossAttack()
+    {
+        rb.velocity = Vector3.zero;
+
+        var attackType = "Attack" + Random.Range(1, bossMoveCount).ToString();
+
+        animator.SetTrigger(attackType);
+        animator.SetBool("moving", false);
+        StartCoroutine(BossAttackingRoutine());
+    }
+
+    public void Attack()
+    {
+        enemyCombat.Attack();
+    }
+
+    private IEnumerator BossAttackingRoutine()
+    {
+        yield return new WaitForSeconds(attackCooldown);
+        attacking = false;
     }
 }
