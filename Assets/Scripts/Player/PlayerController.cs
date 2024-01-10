@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using System;
+
 
 public class PlayerController: MonoBehaviour
 {
@@ -73,10 +75,16 @@ public class PlayerController: MonoBehaviour
             Attack();
         }
 
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Interact();
+        }
+
     }
 
     private void FixedUpdate()
     {
+        if (_dead) { return; }
         Move();
     }
 
@@ -184,9 +192,34 @@ public class PlayerController: MonoBehaviour
         _rigidbody.MovePosition(_transform.position + _transform.forward * (_direction.normalized.magnitude * movementSpeed * Time.deltaTime));
     }
 
-    public void OnDeathTrigger()
+    public void SetMovementSpeed(float speed)
     {
+        movementSpeed = speed;
+    }
+
+    private void Interact()
+    {
+        _animatorCharacterOverworld.SetTrigger("Interact");
+        _animatorCharacterUnderworld.SetTrigger("Interact");
+    }
+
+    public void GetHit(bool activeWorld)
+    {
+        if (activeWorld) { _animatorCharacterOverworld.SetTrigger("GetHit"); }
+        else             { _animatorCharacterUnderworld.SetTrigger("GetHit"); }
+    }
+
+    public void onDeathTrigger()
+    {
+        _rigidbody.angularVelocity = Vector3.zero;
+        _rigidbody.velocity = Vector3.zero;
+
+        _animatorCharacterOverworld.SetTrigger("Dead");
+        _animatorCharacterUnderworld.SetTrigger("Dead");
         _dead = true;
+        GetComponent<PlayerCombat>().Dead();
+
+        FindObjectOfType<GameManager_SurvivalMode>().LoseLevel();
     }
     
 }

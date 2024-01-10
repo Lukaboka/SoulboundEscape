@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class Sword : MonoBehaviour
 {
+    [SerializeField] private PlayerCombat _player;
     private bool _isAttacking = false;
+    private int _damage = 0;
+
+    public void SetDamage(int damage)
+    {
+        _damage = damage;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -12,9 +19,8 @@ public class Sword : MonoBehaviour
         {
             if (other.TryGetComponent<EnemyCombat>(out EnemyCombat enemy))
             {
-                enemy.GetHit(10);
+                enemy.GetHit(_damage);
             }
-            Debug.Log("Hit!");
         }
     }
 
