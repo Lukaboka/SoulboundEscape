@@ -40,7 +40,7 @@ public class NewBehaviourScript : MonoBehaviour
 
     [Header("Player Objects")]
     [SerializeField] private GameObject player;
-    
+
     private GameObject[,] _overworldTileMap;
     private GameObject[,] _underworldTileMap;
     private GameObject[,] _overworldEnvironmentObjects;
@@ -52,7 +52,6 @@ public class NewBehaviourScript : MonoBehaviour
     [System.Serializable]
     public class Element
     {
-
         public string name;
         [Range(1, 10)] public int density;
 

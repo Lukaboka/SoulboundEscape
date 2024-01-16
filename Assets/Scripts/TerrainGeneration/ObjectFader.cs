@@ -8,18 +8,20 @@ public class ObjectFader : MonoBehaviour
 
     [SerializeField] private float fadeSpeed = 10;
     [SerializeField] private float fadeAmount = 0.3f;
-
+    
 
     private bool _opaque;
     private float _originalOpacity;
     private Renderer _renderer;
     private Material[] _mats;
 
-    public bool doFade = false;
+    public bool doFade;
+    public bool stayFaded;
     
     // Start is called before the first frame update
     void Start()
     {
+        stayFaded = false;
         _mats = GetComponent<Renderer>().materials;
         for (int i = 0; i < _mats.Length; i++)
         {
@@ -30,7 +32,7 @@ public class ObjectFader : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (doFade)
+        if (doFade || stayFaded)
         {
             _opaque = false;
             FadeOut();
