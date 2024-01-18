@@ -13,8 +13,7 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] private bool isBoss = false;
     [SerializeField] private int bossMoveCount = 0;
     [SerializeField] private EnemyData data;
-    [SerializeField] private Health _health;
-    
+
     [Header("Movement")]
     [SerializeField]  private Transform target;
     [SerializeField] private float visionRange;

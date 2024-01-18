@@ -1139,6 +1139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d556da88b25fd421a883fc2b4b31de24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 0}
 --- !u!64 &261390885
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2585,7 +2586,26 @@ MonoBehaviour:
   _player: {fileID: 1572945895}
   _enemy: {fileID: 0}
   health: 100
-  healthBar: {fileID: 0}
+  healthBar: {fileID: 1674644225}
+--- !u!114 &524735474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 524735469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 1
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1001 &540530859
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3656,6 +3676,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!198 &687805620 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5898729871911122894, guid: 45e0f06c750176947862c10346226439, type: 3}
+  m_PrefabInstance: {fileID: 342032792}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &687829252
 GameObject:
   m_ObjectHideFlags: 0
@@ -3985,6 +4010,8 @@ MonoBehaviour:
   fillPercent: 40
   player: {fileID: 1572945893}
   navMesh: {fileID: 1895148674}
+  mapCreationDone: 0
+  validSpawnLocations: []
 --- !u!4 &757461387
 Transform:
   m_ObjectHideFlags: 0
@@ -4092,6 +4119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d556da88b25fd421a883fc2b4b31de24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 0}
 --- !u!64 &771543351
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5313,7 +5341,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 460}
+  m_AnchoredPosition: {x: 0, y: 500}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &982586802
@@ -7048,7 +7076,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ceef7a2d10b1fe1478ad86ff6d9a6d6d, type: 2}
+  - {fileID: 2100000, guid: 853c13c8b58dbc349b510bde020498ac, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8007,6 +8035,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 66276fa05b0454b48afa412c50651954, type: 3}
       insertIndex: -1
       addedObject: {fileID: 524735473}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 66276fa05b0454b48afa412c50651954, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 524735474}
     - targetCorrespondingSourceObject: {fileID: -2876843712848608940, guid: 66276fa05b0454b48afa412c50651954, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1752186185}
@@ -8675,7 +8706,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraAnimationHandler: {fileID: 982586805}
-  movementSpeed: 5
+  movementSpeed: 1
   rotateSpeed: 1000
   animatorCharacterOverworld: {fileID: 2057461939}
   animatorDummyUnderworld: {fileID: 1531155231}
@@ -8744,12 +8775,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e71b91566d9640bc91e7b035569cfca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _controller: {fileID: 1572945895}
   data: {fileID: 11400000, guid: 03d8ff5b3fdcdc44eb93d02d976538f4, type: 2}
   damage: 10
+  _overworldHealth: {fileID: 2057461940}
+  _underworlddHealth: {fileID: 524735473}
   attackRange: 2
   attackCooldown: 5
   overworldSword: {fileID: 2144913124}
   underworldSword: {fileID: 1752186184}
+  swordParticle_overworld: {fileID: 687805620}
+  swordParticle_underworld: {fileID: 687805620}
+  gethitParticle_overworld: {fileID: 0}
+  gethitParticle_underworld: {fileID: 0}
+  deadParticle_overworld: {fileID: 0}
+  deadParticle_underworld: {fileID: 0}
+  _speed: 0
+  _damage: 0
+  _hp: 0
 --- !u!1 &1582369254 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: bf0c1b64b279b72418866dfe8ee20ffb, type: 3}
@@ -9286,6 +9329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d556da88b25fd421a883fc2b4b31de24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 0}
 --- !u!64 &1752186185
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -10832,7 +10876,7 @@ MonoBehaviour:
   _player: {fileID: 1572945895}
   _enemy: {fileID: 0}
   health: 100
-  healthBar: {fileID: 0}
+  healthBar: {fileID: 1827603089}
 --- !u!114 &2057461941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11732,6 +11776,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d556da88b25fd421a883fc2b4b31de24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 0}
 --- !u!1 &2145947854 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ead643995baaa9f47bdd7d01598c993a, type: 3}

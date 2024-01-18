@@ -11,7 +11,7 @@ using Quaternion = UnityEngine.Quaternion;
 using Vector2 = System.Numerics.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
-public class NewBehaviourScript : MonoBehaviour
+public class MapGenerator : MonoBehaviour
 {
 
     [Header("Map Tiles")]
@@ -43,8 +43,11 @@ public class NewBehaviourScript : MonoBehaviour
     [Header("Player Objects")]
     [SerializeField] private GameObject player;
 
-    [Header("Nac Mesh")] 
+    [Header("Nav Mesh")] 
     [SerializeField] private NavMeshSurface navMesh;
+
+    [Header("Enemy Spawner")]
+    [SerializeField] private EnemySpawner spawner;
 
     private GameObject[,] _overworldTileMap;
     private GameObject[,] _underworldTileMap;
@@ -53,6 +56,8 @@ public class NewBehaviourScript : MonoBehaviour
     private Transform _anchor;
 
     private Vector3 _spawnPoint;
+
+    public List<Vector3> validSpawnLocations;
 
     [System.Serializable]
     public class Element
@@ -98,7 +103,7 @@ public class NewBehaviourScript : MonoBehaviour
         
         RenderMap(map, _overworldTileMap, _underworldTileMap);
         
-        List<Vector3> validSpawnLocations = new List<Vector3>();
+        validSpawnLocations = new List<Vector3>();
         
         validSpawnLocations = SpawnKeyObjects(map, validSpawnLocations);
 
@@ -106,9 +111,12 @@ public class NewBehaviourScript : MonoBehaviour
         player.transform.position = new Vector3(_spawnPoint.x * spacingOffset + position.x, 
             player.transform.position.y, _spawnPoint.z * spacingOffset + position.z);
         
-        PopulateMap(validSpawnLocations);
+        validSpawnLocations = PopulateMap(validSpawnLocations);
         
         navMesh.BuildNavMesh();
+
+        spawner.gameObject.SetActive(true);
+        spawner.SetValidSpawnPoints(validSpawnLocations);
     }
 
     private void RenderMap(int[,] map, GameObject[,] overworldTileMap, GameObject[,] underworldTileMap)
@@ -313,8 +321,11 @@ public class NewBehaviourScript : MonoBehaviour
         return validSpawnLocations;
     }
 
-    private void PopulateMap(List<Vector3> validSpawnLocations)
+    private List<Vector3> PopulateMap(List<Vector3> validSpawnLocations)
     {
+
+        List<Vector3> removedLocations = new List<Vector3>(); 
+            
         Vector3 anchorPosition = _anchor.position;
         
         for (int locationIndex = 0; locationIndex < validSpawnLocations.Count; locationIndex++)
@@ -358,6 +369,8 @@ public class NewBehaviourScript : MonoBehaviour
                 _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
                 underworldDummyObject.transform.parent = _anchor;
                 overworldDummyObject.transform.parent = _anchor;
+                
+                removedLocations.Add(location);
             }
             
             // Spawn plants at plantDensityPercent chance
@@ -391,6 +404,7 @@ public class NewBehaviourScript : MonoBehaviour
                 _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
                 underworldDummyObject.transform.parent = _anchor;
                 overworldDummyObject.transform.parent = _anchor;
+                removedLocations.Add(location);
             }
             
             // Spawn rocks at rockDensityPercent chance
@@ -428,7 +442,15 @@ public class NewBehaviourScript : MonoBehaviour
                 _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
                 underworldDummyObject.transform.parent = _anchor;
                 overworldDummyObject.transform.parent = _anchor;
+                removedLocations.Add(location);
             }
         }
+
+        foreach (Vector3 location in removedLocations)
+        {
+            validSpawnLocations.Remove(location);
+        }
+        
+        return validSpawnLocations;
     }
 }

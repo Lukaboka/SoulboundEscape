@@ -249,6 +249,7 @@ MonoBehaviour:
   animator: {fileID: 239512831970742071}
   hitbox: {fileID: 3287680938852059135}
   getHitParticles: {fileID: 7457767114528908235}
+  survivalMode: {fileID: 0}
   hpBar: {fileID: 5461074457317410230}
   _maxHealth: 0
   _currentHealth: 0
@@ -14971,7 +14972,7 @@ Transform:
   m_GameObject: {fileID: 4916382407609597212}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.0039039, y: 1.8241456, z: -0.21806812}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
