@@ -199,14 +199,14 @@ public class PlayerController: MonoBehaviour
 
     private void Interact()
     {
-        _animatorCharacterOverworld.SetTrigger("Interact");
-        _animatorCharacterUnderworld.SetTrigger("Interact");
+        animatorCharacterOverworld.SetTrigger("Interact");
+        animatorCharacterUnderworld.SetTrigger("Interact");
     }
 
     public void GetHit(bool activeWorld)
     {
-        if (activeWorld) { _animatorCharacterOverworld.SetTrigger("GetHit"); }
-        else             { _animatorCharacterUnderworld.SetTrigger("GetHit"); }
+        if (activeWorld) { animatorCharacterOverworld.SetTrigger("GetHit"); }
+        else             { animatorCharacterUnderworld.SetTrigger("GetHit"); }
     }
 
     public void onDeathTrigger()
@@ -214,8 +214,8 @@ public class PlayerController: MonoBehaviour
         _rigidbody.angularVelocity = Vector3.zero;
         _rigidbody.velocity = Vector3.zero;
 
-        _animatorCharacterOverworld.SetTrigger("Dead");
-        _animatorCharacterUnderworld.SetTrigger("Dead");
+        animatorCharacterOverworld.SetTrigger("Dead");
+        animatorCharacterUnderworld.SetTrigger("Dead");
         _dead = true;
         GetComponent<PlayerCombat>().Dead();
 
