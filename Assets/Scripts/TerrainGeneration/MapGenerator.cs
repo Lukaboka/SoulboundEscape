@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
@@ -40,6 +42,9 @@ public class NewBehaviourScript : MonoBehaviour
 
     [Header("Player Objects")]
     [SerializeField] private GameObject player;
+
+    [Header("Nac Mesh")] 
+    [SerializeField] private NavMeshSurface navMesh;
 
     private GameObject[,] _overworldTileMap;
     private GameObject[,] _underworldTileMap;
@@ -102,6 +107,8 @@ public class NewBehaviourScript : MonoBehaviour
             player.transform.position.y, _spawnPoint.z * spacingOffset + position.z);
         
         PopulateMap(validSpawnLocations);
+        
+        navMesh.BuildNavMesh();
     }
 
     private void RenderMap(int[,] map, GameObject[,] overworldTileMap, GameObject[,] underworldTileMap)
