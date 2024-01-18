@@ -387,6 +387,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1 &148564719
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,7 +417,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.75671947, g: 0.87666935, b: 0.8962264, a: 1}
-  m_Intensity: 2
+  m_Intensity: 4
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -1340,6 +1341,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!4 &300205560 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fe58f0b40c53f7648bfc3a174c568fb1, type: 3}
@@ -1718,6 +1720,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1 &387833360 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 17b004f1c1b1eba408d616ae73492142, type: 3}
@@ -1743,6 +1746,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1 &391732048 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a620d2aa405473745b5414b8b0ae53a3, type: 3}
@@ -1768,6 +1772,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1 &420484734
 GameObject:
   m_ObjectHideFlags: 0
@@ -2378,6 +2383,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1 &513239079 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2efbde900a730c74cabd74b50e541c42, type: 3}
@@ -2854,6 +2860,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1 &581311834 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 11a90d51790ba9b45a31321893ac38b9, type: 3}
@@ -3977,6 +3984,7 @@ MonoBehaviour:
   smoothingFactor: 2
   fillPercent: 40
   player: {fileID: 1572945893}
+  navMesh: {fileID: 1895148674}
 --- !u!4 &757461387
 Transform:
   m_ObjectHideFlags: 0
@@ -4665,8 +4673,8 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 0.8207547, g: 0.29197446, b: 0.24390352, a: 1}
-  m_Intensity: 7
+  m_Color: {r: 0.8773585, g: 0.5162969, b: 0.48420256, a: 1}
+  m_Intensity: 3
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -5017,6 +5025,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1 &910563069 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 32c085c29d53129448e5a81017dee395, type: 3}
@@ -5042,6 +5051,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1 &911527944 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e8a1b753b1de0184d9a2707550b11b17, type: 3}
@@ -5092,6 +5102,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1001 &942507780
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5265,6 +5276,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1 &982586800
 GameObject:
   m_ObjectHideFlags: 0
@@ -5649,6 +5661,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1001 &1034399449
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5762,6 +5775,7 @@ MonoBehaviour:
   distance: 0.5
   movementSpeed: 0.1
   player: {fileID: 1572945893}
+  cameraFollow: {fileID: 687829253}
 --- !u!1001 &1042671733
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6014,6 +6028,7 @@ MonoBehaviour:
   distance: 0.5
   movementSpeed: 0.1
   player: {fileID: 1572945893}
+  cameraFollow: {fileID: 687829253}
 --- !u!1001 &1078180405
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6202,6 +6217,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1 &1107011296 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 12d31493e1e19ab4cb8072a686773531, type: 3}
@@ -6227,6 +6243,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1 &1107231098 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a99d61a35c49ea7468656c9038e8e731, type: 3}
@@ -6929,6 +6946,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1 &1292563157 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: fe58f0b40c53f7648bfc3a174c568fb1, type: 3}
@@ -6964,6 +6982,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!4 &1309939327 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 42927baf15057c54b94d225646bab9c7, type: 3}
@@ -7182,6 +7201,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1001 &1347337852
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7558,8 +7578,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeSpeed: 10
-  fadeAmount: 0.1
+  fadeAmount: 0.01
   doFade: 0
+  stayFaded: 0
 --- !u!1001 &1435821352
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7739,6 +7760,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!4 &1441862249 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: bf0c1b64b279b72418866dfe8ee20ffb, type: 3}
@@ -8027,6 +8049,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1 &1523537006 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 23dbbece262cdc84c818f6b697749296, type: 3}
@@ -8052,6 +8075,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1 &1525826772 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b746d8a1126bcc64db8ca80b642c3982, type: 3}
@@ -9126,6 +9150,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1 &1656647317 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a71a6ba72e8ebe440a511c28de5977b8, type: 3}
@@ -9243,6 +9268,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1 &1752186180 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2876843712848608940, guid: 66276fa05b0454b48afa412c50651954, type: 3}
@@ -9780,6 +9806,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1 &1877989159 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 53af5a5572be917459605536a2a9cd4c, type: 3}
@@ -9806,6 +9833,7 @@ MonoBehaviour:
   distance: 0.5
   movementSpeed: 0.1
   player: {fileID: 1572945893}
+  cameraFollow: {fileID: 687829253}
 --- !u!4 &1892337853 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5ebbb83bbed47844b9cd9a62af0b55eb, type: 3}
@@ -9890,6 +9918,69 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1649682014}
   m_SourcePrefab: {fileID: 100100000, guid: 06686a4e9fd55a04c89471871a8f204a, type: 3}
+--- !u!1 &1895148673
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1895148675}
+  - component: {fileID: 1895148674}
+  m_Layer: 0
+  m_Name: NavMesh Surface
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1895148674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1895148673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.06666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 0}
+  m_BuildHeightMesh: 0
+--- !u!4 &1895148675
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1895148673}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1897706080
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10417,6 +10508,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 66276fa05b0454b48afa412c50651954, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2057461940}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 66276fa05b0454b48afa412c50651954, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2057461941}
     - targetCorrespondingSourceObject: {fileID: -2876843712848608940, guid: 66276fa05b0454b48afa412c50651954, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2144913120}
@@ -10454,6 +10548,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1001 &2019599181
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10738,6 +10833,25 @@ MonoBehaviour:
   _enemy: {fileID: 0}
   health: 100
   healthBar: {fileID: 0}
+--- !u!114 &2057461941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057461936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 1
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1001 &2059824001
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11146,6 +11260,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1001 &2085768306
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11541,6 +11656,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1 &2137442402 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 57c63c93cd312024ab533c59e92eee2d, type: 3}
@@ -11566,6 +11682,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1 &2139273028 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a7a83fd3cdfb40643a3786dc63c62773, type: 3}
@@ -11640,6 +11757,7 @@ MonoBehaviour:
   fadeSpeed: 10
   fadeAmount: 0.1
   doFade: 0
+  stayFaded: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -11665,3 +11783,4 @@ SceneRoots:
   - {fileID: 420484735}
   - {fileID: 636968617}
   - {fileID: 515464538}
+  - {fileID: 1895148675}

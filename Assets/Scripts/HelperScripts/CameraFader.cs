@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class CameraFader : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class CameraFader : MonoBehaviour
         Vector3 position = transform.position;
         var position1 = target.transform.position;
         Vector3 direction = position1 - position;
+        
         RaycastHit[] hits;
 
         hits = Physics.RaycastAll(position, direction,

@@ -12,6 +12,8 @@ public class KeyObjectInteractable : MonoBehaviour
 
     [SerializeField] private GameObject player;
 
+    [SerializeField] private CameraFollow cameraFollow;
+    
     private Vector3 _middlePosition;
     private bool _movingUp;
     private Vector3 _upEnd;
@@ -22,17 +24,32 @@ public class KeyObjectInteractable : MonoBehaviour
         _middlePosition = transform.position;
         _upEnd = _middlePosition + new Vector3(0, distance, 0);
         _movingUp = true;
-        transform.GetChild(0).gameObject.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        var position1 = transform.position;
-        Vector2 position = new Vector2(position1.x, position1.z);
+
+        var position2 = transform.position;
+        Vector2 position = new Vector2(position2.x, position2.z);
         
-        var position2 = player.transform.position;
-        Vector2 playerPosition = new Vector2(position2.x, position2.z);
+        var position3 = player.transform.position;
+        Vector2 playerPosition = new Vector2(position3.x, position3.z);
+        
+        Vector3 position1 = transform.position;
+        
+        var hits = Physics.RaycastAll(position1, cameraFollow.offset,
+            Vector3.Distance(position1, position1 + cameraFollow.gameObject.transform.position));
+        
+        foreach (RaycastHit hit in hits)
+        {
+            if (hit.transform.CompareTag("Environment"))
+            {
+                hit.collider.gameObject.transform.GetChild(0).GetComponent<Renderer>().shadowCastingMode =
+                    ShadowCastingMode.ShadowsOnly;
+                hit.collider.gameObject.GetComponent<ObjectFader>().stayFaded = true;
+            }
+        }
 
         if (Vector2.Distance(position, playerPosition) <= 3)
         {
