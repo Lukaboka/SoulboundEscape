@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Cactus
   m_EditorClassIdentifier: 
   hp: 50
-  damage: 3
-  speed: 2
+  damage: 5
+  speed: 3

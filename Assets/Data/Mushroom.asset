@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Mushroom
   m_EditorClassIdentifier: 
   hp: 25
-  damage: 1
+  damage: 2
   speed: 3

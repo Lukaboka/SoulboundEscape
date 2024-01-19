@@ -22,7 +22,7 @@ public class EnemyCombat : MonoBehaviour
     [SerializeField] private int _damage;
 
     private Health _player;
-    private bool isDead = false;
+    private bool _isDead = false;
 
     public void SetStats(int maxHealth, int damage)
     {
@@ -36,9 +36,9 @@ public class EnemyCombat : MonoBehaviour
     {
         _currentHealth -= damage;
         hpBar.fillAmount = (float)_currentHealth / (float)_maxHealth;
-        if(_currentHealth < 0 && !isDead)
+        if(_currentHealth < 0 && !_isDead)
         {
-            isDead = true;
+            _isDead = true;
             hpBar.fillAmount = 0;
             animator.SetTrigger("Dead");
             enemyBehaviour.onDeathTrigger();

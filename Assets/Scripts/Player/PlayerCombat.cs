@@ -50,9 +50,11 @@ public class PlayerCombat : MonoBehaviour
         if(activeWorld) {
             overworldSword.AttackStateChanged(state);
             swordParticle_overworld.Play();
+            Debug.Log("Attack");
         } else {
             underworldSword.AttackStateChanged(state);
             swordParticle_underworld.Play();
+            Debug.Log("Attack");
         }
     }
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyBehaviour : MonoBehaviour
 {
@@ -19,30 +20,32 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] private float visionRange;
     [SerializeField] private float speed = 2f;
     [SerializeField] private float rotateSpeed = 20f;
+    [SerializeField] private NavMeshAgent agent;
 
     [Header("Attack")]
-    [SerializeField] private int damage;
     [SerializeField] private float attackRange = 2f;
     [SerializeField] private float attackCooldown = 5f;
-    private bool attacking = false;
-
-    private bool isDead = false;
+    
+    private bool _attacking;
+    private bool _isDead;
+    private Transform _transform;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
     }
 
     void Start()
     {
         SetEnemyValues();
+        agent.destination = target.position;
     }
 
     void FixedUpdate()
     {
-        if(isDead) { return; }
-        if(attacking) { return; }
+        if(_attacking) { return; }
 
         float distance = Vector3.Distance(target.position, rb.position);
 
@@ -52,6 +55,7 @@ public class EnemyBehaviour : MonoBehaviour
         }
         if (distance > attackRange)
         {
+            agent.destination = target.position;
             animator.SetBool("moving", true);
             Move();
         } else {
@@ -61,7 +65,7 @@ public class EnemyBehaviour : MonoBehaviour
 
         if (distance <= attackRange)
         {
-            attacking = true;
+            _attacking = true;
             if (isBoss) { BossAttack(); }
             else
             {
@@ -77,6 +81,7 @@ public class EnemyBehaviour : MonoBehaviour
     private void Stop()
     {
         animator.SetBool("moving", false);
+        agent.destination = target.position;
         rb.angularVelocity = Vector3.zero;
         rb.velocity = Vector3.zero;
     }
@@ -95,7 +100,6 @@ public class EnemyBehaviour : MonoBehaviour
     private void SetEnemyValues()
     {
         enemyCombat.SetStats(data.hp, data.damage);
-        damage = data.damage;
         speed = data.speed;
     }
 
@@ -106,7 +110,7 @@ public class EnemyBehaviour : MonoBehaviour
         yield return new WaitForSeconds(.75f);
         animator.SetBool("attacking", false);
         yield return new WaitForSeconds(attackCooldown - 1f);
-        attacking = false;
+        _attacking = false;
     }
 
     public void GotHit()
@@ -116,7 +120,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     public void onDeathTrigger()
     {
-        isDead = true;
+        _isDead = true;
     }
 
     private void BossAttack()
@@ -129,15 +133,10 @@ public class EnemyBehaviour : MonoBehaviour
         animator.SetBool("moving", false);
         StartCoroutine(BossAttackingRoutine());
     }
-
-    public void Attack()
-    {
-        enemyCombat.Attack();
-    }
-
+    
     private IEnumerator BossAttackingRoutine()
     {
         yield return new WaitForSeconds(attackCooldown);
-        attacking = false;
+        _attacking = false;
     }
 }

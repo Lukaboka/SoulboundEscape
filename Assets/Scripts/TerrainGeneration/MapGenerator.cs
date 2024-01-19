@@ -116,7 +116,9 @@ public class MapGenerator : MonoBehaviour
         navMesh.BuildNavMesh();
 
         spawner.gameObject.SetActive(true);
-        spawner.SetValidSpawnPoints(validSpawnLocations);
+        spawner.SetMapData(validSpawnLocations, spacingOffset, _anchor);
+        
+        Debug.Log("Map Generation completed");
     }
 
     private void RenderMap(int[,] map, GameObject[,] overworldTileMap, GameObject[,] underworldTileMap)
