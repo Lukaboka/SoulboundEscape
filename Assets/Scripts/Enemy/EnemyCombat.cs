@@ -50,6 +50,7 @@ public class EnemyCombat : MonoBehaviour
         _player = hitbox.GetIfPlayerIsInHitbox();
         if (_player != null)
         {
+            AudioManager.instance.LightHit();
             Debug.Log("Hit player!");
             _player.Damage(_damage);
         }

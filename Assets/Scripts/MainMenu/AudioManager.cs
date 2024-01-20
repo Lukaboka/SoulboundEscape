@@ -5,8 +5,21 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    private AudioSource sfxSpell;
+    private AudioSource sfxHeal;
+    private AudioSource sfxDash;
     private AudioSource sfxButton;
+    private AudioSource sfxSpell;
+    private AudioSource sfxButton2;
+    private AudioSource sfxLightHit;
+    private AudioSource sfxLightDeeperHit;
+    private AudioSource sfxMuffleHit;
+    private AudioSource sfxHardHit;
+    private AudioSource sfxHeal2;
+    private AudioSource sfxSlash;
+    private AudioSource sfxSwordHit;
+    private AudioSource sfxSwordHitBoss;
+    private AudioSource sfxSwordHardHitBoss;
+    private AudioSource sfxPickUp;
 
 
     private static AudioManager _instance = null;
@@ -24,10 +37,36 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
+        sfxHeal = this.GetComponents<AudioSource>()[0];
+        sfxDash = this.GetComponents<AudioSource>()[1];
+        sfxButton = this.GetComponents<AudioSource>()[2];
+        sfxSpell = this.GetComponents<AudioSource>()[3];
+        sfxButton2 = this.GetComponents<AudioSource>()[4];
+        sfxLightHit = this.GetComponents<AudioSource>()[5];
+        sfxLightDeeperHit = this.GetComponents<AudioSource>()[6];
+        sfxMuffleHit = this.GetComponents<AudioSource>()[7];
+        sfxHardHit = this.GetComponents<AudioSource>()[8];
+        sfxHeal2 = this.GetComponents<AudioSource>()[9];
+        sfxSlash = this.GetComponents<AudioSource>()[10];
+        sfxSwordHit = this.GetComponents<AudioSource>()[11];
+        sfxSwordHitBoss = this.GetComponents<AudioSource>()[12];
+        sfxSwordHardHitBoss = this.GetComponents<AudioSource>()[13];
+        sfxPickUp = this.GetComponents<AudioSource>()[14];
+    }
 
-        //get audiosource from gameobject
-        sfxSpell = this.GetComponents<AudioSource>()[0];
-        sfxButton = this.GetComponents<AudioSource>()[1];
+    public void Heal()
+    {
+        sfxHeal.Play();
+    }
+
+    public void Dash()
+    {
+        sfxDash.Play();
+    }
+
+    public void Button()
+    {
+        sfxButton.Play();
     }
 
     public void Spell()
@@ -35,8 +74,54 @@ public class AudioManager : MonoBehaviour
         sfxSpell.Play();
     }
 
-    public void Button()
+    public void LightHit()
     {
-        sfxButton.Play();
+        sfxLightHit.Play();
     }
+
+    public void LightDeeperHit()
+    {
+        sfxLightDeeperHit.Play();
+    }
+
+    public void MuffleHit()
+    {
+        sfxMuffleHit.Play();
+    }
+
+    public void HardHit()
+    {
+        sfxHardHit.Play();
+    }
+    
+    public void Heal2()
+    {
+        sfxHeal2.Play();
+    }
+
+    public void Slash()
+    {
+        sfxSlash.Play();
+    }
+
+    public void SwordHit() 
+    { 
+        sfxSwordHit.Play(); 
+    }
+
+    public void SwordHitBoss()
+    {
+        sfxSwordHitBoss.Play();
+    }
+
+    public void SwordHardHitBoss()
+    {
+        sfxSwordHardHitBoss.Play();
+    }
+
+    public void PickUp()
+    {
+        sfxPickUp.Play();
+    }
+
 }

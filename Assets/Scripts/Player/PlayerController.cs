@@ -82,6 +82,7 @@ public class PlayerController: MonoBehaviour
 
     private void Dash()
     {
+        AudioManager.instance.Dash();
         _rigidbody.velocity = Vector3.zero;
         movementSpeed += 2;
         if (_swapped && !animatorCharacterUnderworld.GetBool(Attacking))
@@ -119,6 +120,7 @@ public class PlayerController: MonoBehaviour
 
     public void Attack()
     {
+        AudioManager.instance.Slash();
         player.Attack(true);
         if (_swapped && !animatorCharacterUnderworld.GetBool(Attacking))
         {
