@@ -37,8 +37,15 @@ public class MainMenu : MonoBehaviour
     private string currentText = "";
     [SerializeField] private int currentScreen = 1;
 
-    //Story init
+
+    [Header("Text (for Shadows)")]
+    [SerializeField] private List<TextMeshProUGUI> texts;
+
+    //Init Menu
     private GameObject menu;
+    private GameObject info;
+
+    //Story init
     private Image storyIMG;
     private TextMeshProUGUI storyText;
     private Button skipButton;
@@ -49,9 +56,11 @@ public class MainMenu : MonoBehaviour
     {
         //Story
         menu = GameObject.Find("Menu");
+        info = GameObject.Find("Info");
         storyIMG = GameObject.Find("StoryScreen").GetComponent<Image>();
         storyText = GameObject.Find("StoryText").GetComponent<TextMeshProUGUI>();
         skipButton = GameObject.Find("SkipButton").GetComponent<Button>();
+        info.SetActive(false);
         storyIMG.enabled = false;
         storyText.enabled = false;
         skipButton.enabled = false;
@@ -62,6 +71,13 @@ public class MainMenu : MonoBehaviour
         storyScreenFade.enabled = false;
         transition = GameObject.Find("TransitionPaneMainMenu").GetComponent<Animator>();
         transition.enabled = false;
+
+        //Adding shadows for texts
+        foreach(TextMeshProUGUI text in texts)
+        {
+            text.outlineWidth = 0.1f;
+            text.outlineColor = new Color32(0, 0, 0, 255);
+        }
     }
 
     public void GameStart()
@@ -91,6 +107,8 @@ public class MainMenu : MonoBehaviour
         {
             currentText = fullText.Substring(0, i);
             storyText.text = currentText;
+            //pay sfx
+            AudioManager.instance.MechanicalButton();
 
             if (!skipping && fullText[i] != '.')
                 yield return new WaitForSeconds(wordDelay);
@@ -171,10 +189,16 @@ public class MainMenu : MonoBehaviour
     public void GameInfo()
     {
         AudioManager.instance.Button();
+        info.SetActive(true);
         Debug.Log("Game Info");
     }
 
-
+    public void CloseGameInfo()
+    {
+        AudioManager.instance.Button();
+        info.SetActive(false);
+        Debug.Log("Close Game Info");
+    }
     public void GameExit()
     {
         AudioManager.instance.Button();

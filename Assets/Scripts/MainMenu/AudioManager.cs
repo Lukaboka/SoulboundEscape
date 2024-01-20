@@ -20,6 +20,7 @@ public class AudioManager : MonoBehaviour
     private AudioSource sfxSwordHitBoss;
     private AudioSource sfxSwordHardHitBoss;
     private AudioSource sfxPickUp;
+    private AudioSource sfxMechanicalButton;
 
 
     private static AudioManager _instance = null;
@@ -52,6 +53,7 @@ public class AudioManager : MonoBehaviour
         sfxSwordHitBoss = this.GetComponents<AudioSource>()[12];
         sfxSwordHardHitBoss = this.GetComponents<AudioSource>()[13];
         sfxPickUp = this.GetComponents<AudioSource>()[14];
+        sfxMechanicalButton = this.GetComponents<AudioSource>()[15];
     }
 
     public void Heal()
@@ -122,6 +124,11 @@ public class AudioManager : MonoBehaviour
     public void PickUp()
     {
         sfxPickUp.Play();
+    }
+
+    public void MechanicalButton()
+    {
+        sfxMechanicalButton.Play();
     }
 
 }
