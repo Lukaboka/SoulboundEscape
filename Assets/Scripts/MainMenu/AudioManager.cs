@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
@@ -22,6 +22,12 @@ public class AudioManager : MonoBehaviour
     private AudioSource sfxPickUp;
     private AudioSource sfxMechanicalButton;
 
+    private AudioSource bgmIntro;
+    private AudioSource bgmStory;
+    private AudioSource bgmNormal;
+
+    private AudioSource currentBGM;
+
 
     private static AudioManager _instance = null;
     public static AudioManager instance
@@ -38,6 +44,15 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
+
         sfxHeal = this.GetComponents<AudioSource>()[0];
         sfxDash = this.GetComponents<AudioSource>()[1];
         sfxButton = this.GetComponents<AudioSource>()[2];
@@ -54,6 +69,38 @@ public class AudioManager : MonoBehaviour
         sfxSwordHardHitBoss = this.GetComponents<AudioSource>()[13];
         sfxPickUp = this.GetComponents<AudioSource>()[14];
         sfxMechanicalButton = this.GetComponents<AudioSource>()[15];
+
+        bgmIntro = this.GetComponents<AudioSource>()[16];
+        bgmStory = this.GetComponents<AudioSource>()[17];
+        bgmNormal = this.GetComponents<AudioSource>()[18];
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)
+    {
+        if (currentBGM != null)
+        {
+            currentBGM.Stop();
+        }
+
+        if (scene.name.Equals("MainMenu"))
+        {
+            currentBGM = bgmIntro;
+        }
+        else
+        {
+            currentBGM = bgmNormal;
+        }
+        currentBGM.loop = true;
+        currentBGM.Play();
+    }
+
+    public void StartStoryMusic()
+    {
+        currentBGM.Stop();
+        currentBGM = bgmStory;
+        currentBGM.loop = true;
+        currentBGM.Play();
     }
 
     public void Heal()

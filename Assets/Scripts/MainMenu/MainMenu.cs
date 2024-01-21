@@ -97,6 +97,7 @@ public class MainMenu : MonoBehaviour
         skipButton.enabled = true;
         skipButton.image.enabled = true;
         storyScreenFade.enabled = true;
+        AudioManager.instance.StartStoryMusic();
         StartCoroutine(FadeScreen());
         StartCoroutine(ShowText(slide01Text));
     }
