@@ -76,19 +76,21 @@ public class AudioManager : MonoBehaviour
         sfxSpell.Play();
     }
 
-    public void LightHit()
+    public void Hit()
     {
-        sfxLightHit.Play();
-    }
-
-    public void LightDeeperHit()
-    {
-        sfxLightDeeperHit.Play();
-    }
-
-    public void MuffleHit()
-    {
-        sfxMuffleHit.Play();
+        int random = Random.Range(0, 3);
+        switch (random)
+        {
+            case 0:
+                sfxLightHit.Play();
+                break;
+            case 1:
+                sfxLightDeeperHit.Play();
+                break;
+            case 2:
+                sfxMuffleHit.Play();
+                break;
+        }
     }
 
     public void HardHit()
