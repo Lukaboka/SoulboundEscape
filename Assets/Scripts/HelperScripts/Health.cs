@@ -45,6 +45,8 @@ public class Health : MonoBehaviour
             throw new System.ArgumentOutOfRangeException("Cannot have negative healing");
         }
 
+        AudioManager.instance.Heal();
+
         bool wouldBeOverMaxHealth = health + amount > MAX_HEALTH;
 
         if (wouldBeOverMaxHealth)

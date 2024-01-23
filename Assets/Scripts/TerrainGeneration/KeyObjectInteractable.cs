@@ -57,6 +57,7 @@ public class KeyObjectInteractable : MonoBehaviour
             
             if (Input.GetKeyDown(KeyCode.E))
             {
+                AudioManager.instance.PickUp();
                 Debug.Log(gameObject.name);
                 if (gameObject.name == "Potion(Clone)")
                 {

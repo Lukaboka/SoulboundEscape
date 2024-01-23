@@ -58,6 +58,8 @@ public class EnemyCombat : MonoBehaviour
         if (_player != null)
         {
             _player.GetComponentInParent<PlayerCombat>().GetHit();
+            AudioManager.instance.Hit();
+            Debug.Log("Hit player!");
             _player.Damage(_damage);
         }
         _player = null;
