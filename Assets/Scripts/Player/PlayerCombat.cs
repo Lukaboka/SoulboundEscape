@@ -35,6 +35,8 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private ParticleSystem deadParticle_overworld;
     [SerializeField] private ParticleSystem deadParticle_underworld;
 
+    public bool isDead = false;
+
     private void Awake()
     {
         SetData();
@@ -42,30 +44,45 @@ public class PlayerCombat : MonoBehaviour
 
     public void ChangeActiveWorld()
     {
+        if (isDead) { return; }
         activeWorld = !activeWorld;
     }
 
     public void Attack(bool state)
     {
-        if(activeWorld) {
+        if (isDead) { return; }
+        if (activeWorld) {
             overworldSword.AttackStateChanged(state);
+            swordParticle_overworld.gameObject.SetActive(true);
             swordParticle_overworld.Play();
+            StartCoroutine(stopParticle(swordParticle_overworld.totalTime));
             Debug.Log("Attack");
         } else {
             underworldSword.AttackStateChanged(state);
+            swordParticle_underworld.gameObject.SetActive(true);
             swordParticle_underworld.Play();
+            StartCoroutine(stopParticle(swordParticle_underworld.totalTime));
             Debug.Log("Attack");
         }
     }
 
+    IEnumerator stopParticle(float time)
+    {
+        yield return new WaitForSeconds(1f);
+        swordParticle_overworld.gameObject.SetActive(false);
+        swordParticle_underworld.gameObject.SetActive(false);
+    }
+
     public void GetHit()
     {
+        if(isDead) { return; }
         if (activeWorld) { gethitParticle_overworld.Play(); _controller.GetHit(true); }
         else             { gethitParticle_underworld.Play(); _controller.GetHit(false); }
     }
 
     public void Dead()
     {
+        isDead = true;
         deadParticle_overworld.gameObject.SetActive(true);
         deadParticle_underworld.gameObject.SetActive(true);
     }
@@ -119,6 +136,7 @@ public class PlayerCombat : MonoBehaviour
                         _damage += 50;
                         break;
                 }
+                AudioManager.instance.Heal2();
                 overworldSword.SetDamage(_damage);
                 underworldSword.SetDamage(_damage);
                 break;
@@ -151,6 +169,7 @@ public class PlayerCombat : MonoBehaviour
                         _speed += 1f;
                         break;
                 }
+                AudioManager.instance.Heal2();
                 _controller.SetMovementSpeed(_speed);
                 break;
         }

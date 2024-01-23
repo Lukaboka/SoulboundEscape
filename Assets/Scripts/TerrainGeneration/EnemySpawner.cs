@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TreeEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
@@ -9,6 +8,9 @@ using Random = UnityEngine.Random;
 
 public class EnemySpawner : MonoBehaviour
 {
+    [Header("Boss Scene")]
+    [SerializeField] private bool isBossScene = false;
+
     [Header("Overworld Enemies")] 
     [SerializeField] private GameObject[] overworldEnemies;
 
@@ -19,6 +21,9 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float intervalTimer;
     [SerializeField] private float intervalTimerDecrease;
     [SerializeField] private int startingGracePeriod;
+
+    [Header("Boss Level")]
+    [SerializeField] private float bossInterval; 
 
     private List<Vector3> _validSpawnPoints;
     private int _mapOffset;
@@ -44,26 +49,78 @@ public class EnemySpawner : MonoBehaviour
     private IEnumerator Spawn()
     {
         yield return new WaitForSeconds(startingGracePeriod);
-        
-        while (!GameManager.Instance.Escaped)
+
+        if (!isBossScene)
+        {
+            while (!GameManager.Instance.Escaped)
+            {
+                ShuffleList(_validSpawnPoints);
+                int spawnCounter = _validSpawnPoints.Count;
+
+                spawnCounter = SpawnBosses(spawnCounter, _validSpawnPoints);
+
+                if (spawnCounter > 0)
+                {
+                    SpawnMobs(spawnCounter, _validSpawnPoints, _validSpawnPoints.Count - spawnCounter);
+                }
+
+                yield return new WaitForSeconds(intervalTimer);
+                intervalTimer -= intervalTimerDecrease;
+            }
+        }
+        else
         {
             ShuffleList(_validSpawnPoints);
             int spawnCounter = _validSpawnPoints.Count;
-            
-            spawnCounter = SpawnBosses(spawnCounter, _validSpawnPoints);
 
-            if (spawnCounter > 0)
-            {
-                SpawnMobs(spawnCounter, _validSpawnPoints, _validSpawnPoints.Count - spawnCounter);
-            }
-
-            yield return new WaitForSeconds(intervalTimer);
-            intervalTimer -= intervalTimerDecrease;
+            SpawnBoss(_validSpawnPoints);
         }
-
     }
 
-    private int  SpawnBosses(int spawnCounter, List<Vector3> validSpawnPoints)
+    private void SpawnBoss(List<Vector3> validSpawnPoints)
+    {
+        int randint = Random.Range(0, validSpawnPoints.Count);
+        Vector3 location = validSpawnPoints[randint];
+        NavMeshHit hit;
+
+        Vector3 spawnpoint_overworld = new Vector3(location.x * _mapOffset + _pivotPosition.x, 0,
+                    location.z * _mapOffset + _pivotPosition.z);
+
+        if (NavMesh.SamplePosition(spawnpoint_overworld, out hit, 5f, 0))
+        {
+            spawnpoint_overworld = hit.position;
+        }
+
+        GameObject bossEnemy_overworld = Instantiate(overworldEnemies[0], spawnpoint_overworld, Quaternion.Euler(0, 0, 0));
+        bossEnemy_overworld.SetActive(true);
+        bossEnemy_overworld.transform.parent = transform;
+
+        StartCoroutine(SpawnUnderworld(validSpawnPoints));
+    }
+
+    private IEnumerator SpawnUnderworld(List<Vector3> validSpawnPoints)
+    {
+        yield return new WaitForSeconds(bossInterval);
+        int randint = Random.Range(0, validSpawnPoints.Count);
+        Vector3 location = validSpawnPoints[randint];
+        NavMeshHit hit;
+
+
+        Vector3 spawnpoint_underworld = new Vector3(location.x * _mapOffset + _pivotPosition.x, -99.5f,
+                    location.z * _mapOffset + _pivotPosition.z);
+
+        if (NavMesh.SamplePosition(spawnpoint_underworld, out hit, 5f, 0))
+        {
+            spawnpoint_underworld = hit.position;
+        }
+
+        GameObject bossEnemy_underworld = Instantiate(underworldEnemies[0], spawnpoint_underworld, Quaternion.Euler(0, 0, 0));
+        bossEnemy_underworld.SetActive(true);
+        bossEnemy_underworld.transform.parent = transform;
+    }
+
+
+    private int SpawnBosses(int spawnCounter, List<Vector3> validSpawnPoints)
     {
         int amount = _wave - 5;
         
@@ -92,8 +149,6 @@ public class EnemySpawner : MonoBehaviour
                 GameObject bossEnemy = Instantiate(overworldEnemies[1], spawnpoint, Quaternion.Euler(0, 0, 0));
                 bossEnemy.SetActive(true);
                 bossEnemy.transform.parent = transform;
-                
-                
             }
             else
             {

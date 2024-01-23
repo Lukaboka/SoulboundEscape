@@ -114,16 +114,13 @@ public class PlayerController: MonoBehaviour
 
     public void AdjustControls()
     {
-        
         _swapped = !_swapped;
-        
     }
 
     // Fetches user keyboard input and puts it into _input vector
     private void GetDirection() {
         
         _direction = new Vector3(_inputVector.x, 0, _inputVector.y).normalized;
-        
     }
 
     public void Attack()
@@ -221,7 +218,7 @@ public class PlayerController: MonoBehaviour
         _dead = true;
         GetComponent<PlayerCombat>().Dead();
 
-        FindObjectOfType<GameManager_SurvivalMode>().LoseLevel();
+        FindObjectOfType<GameManager>().Lose();
     }
     
 }

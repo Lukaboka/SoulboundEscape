@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2212851631147276944}
   m_Layer: 0
   m_Name: PowerUp Speed
-  m_TagString: Powerup
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31,7 +31,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1051037401529007482}
   - {fileID: 7985957668683401403}
   - {fileID: 1100923702455642211}
   m_Father: {fileID: 0}
@@ -71,88 +70,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powerup: 0
   strength: 0
-  particle1: {fileID: 1051037401513772890}
+  particle1: {fileID: 0}
   particle2: {fileID: 7985957668664043311}
   claimedParticle: {fileID: 1100923702436198931}
---- !u!1001 &1051037401529433484
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 7191909156877643899}
-    m_Modifications:
-    - target: {fileID: 107158, guid: add31a167134c4f4095d6610013a701f, type: 3}
-      propertyPath: m_Name
-      value: StarFogFlowBlue
-      objectReference: {fileID: 0}
-    - target: {fileID: 426230, guid: add31a167134c4f4095d6610013a701f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 426230, guid: add31a167134c4f4095d6610013a701f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 426230, guid: add31a167134c4f4095d6610013a701f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 426230, guid: add31a167134c4f4095d6610013a701f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 426230, guid: add31a167134c4f4095d6610013a701f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 426230, guid: add31a167134c4f4095d6610013a701f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 426230, guid: add31a167134c4f4095d6610013a701f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 426230, guid: add31a167134c4f4095d6610013a701f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 426230, guid: add31a167134c4f4095d6610013a701f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 426230, guid: add31a167134c4f4095d6610013a701f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 19904258, guid: add31a167134c4f4095d6610013a701f, type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 19906100, guid: add31a167134c4f4095d6610013a701f, type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 19934478, guid: add31a167134c4f4095d6610013a701f, type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: add31a167134c4f4095d6610013a701f, type: 3}
---- !u!198 &1051037401513772890 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 19888854, guid: add31a167134c4f4095d6610013a701f, type: 3}
-  m_PrefabInstance: {fileID: 1051037401529433484}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1051037401529007482 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 426230, guid: add31a167134c4f4095d6610013a701f, type: 3}
-  m_PrefabInstance: {fileID: 1051037401529433484}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1100923702455479295
 PrefabInstance:
   m_ObjectHideFlags: 0

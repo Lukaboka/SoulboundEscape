@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class EnemyHitArea : MonoBehaviour
 {
-    [SerializeField] private bool isPlayerInHitArea = false;
-
     private Health _player;
 
     private void OnTriggerEnter(Collider other)
@@ -13,7 +11,6 @@ public class EnemyHitArea : MonoBehaviour
         if (other.TryGetComponent<Health>(out Health player))
         {
             _player = player;
-            isPlayerInHitArea = true;
         }
     }
 
@@ -22,7 +19,6 @@ public class EnemyHitArea : MonoBehaviour
         if (other.TryGetComponent<Health>(out Health player))
         {
             _player = null;
-            isPlayerInHitArea = false;
         }
     }
 

@@ -2,10 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-
+    [SerializeField] private bool isBossScene = false;
     private static GameManager _instanceGameManager;
 
     public bool GotCandles { get; set; }
@@ -40,9 +41,32 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if(isBossScene)
+        {
+            if(Escaped)
+            {
+                SceneManager.LoadScene("Win");
+            }
+        }
+
         if (GotCandles && GotKeys && GotPotion)
         {
             PortalOpen = true;
         }
+        if(Escaped && !isBossScene)
+        {
+            SceneManager.LoadScene("BossScene");
+        }
+    }
+
+    public void Lose()
+    {
+        StartCoroutine(dead());
+    }
+
+    IEnumerator dead()
+    {
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

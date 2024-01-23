@@ -73,7 +73,8 @@ public class EnemyCombat : MonoBehaviour
             gameObject.SetActive(false);
             return;
         }
-
-        Destroy(gameObject, 2f);
+        if(enemyBehaviour.isBoss) { Destroy(gameObject, 3f); }
+        else { Destroy(gameObject, 2f); }
+        
     }
 }

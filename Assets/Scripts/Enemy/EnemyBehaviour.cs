@@ -11,7 +11,7 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] private EnemyCombat enemyCombat;
 
     [Header("Stats")]
-    [SerializeField] private bool isBoss = false;
+    [SerializeField] public bool isBoss = false;
     [SerializeField] private int bossMoveCount = 0;
     [SerializeField] private EnemyData data;
 
@@ -25,6 +25,9 @@ public class EnemyBehaviour : MonoBehaviour
     [Header("Attack")]
     [SerializeField] private float attackRange = 2f;
     [SerializeField] private float attackCooldown = 5f;
+
+    [Header("Boss Level Components")]
+    [SerializeField] private bool isBossLevel = false;
     
     private bool _attacking;
     private bool _isDead;
@@ -120,6 +123,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     public void onDeathTrigger()
     {
+        if(isBossLevel) { FindObjectOfType<BossLevel>().BossKilled(); }
         _isDead = true;
     }
 

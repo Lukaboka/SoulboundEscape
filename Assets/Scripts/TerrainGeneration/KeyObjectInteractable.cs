@@ -53,11 +53,11 @@ public class KeyObjectInteractable : MonoBehaviour
 
         if (Vector2.Distance(position, playerPosition) <= 3)
         {
-            transform.GetChild(0).gameObject.SetActive(true);
+            transform.GetChild(1).gameObject.SetActive(true);
             
             if (Input.GetKeyDown(KeyCode.E))
             {
-                AudioManager.instance.PickUp();
+                //AudioManager.instance.PickUp();
                 Debug.Log(gameObject.name);
                 if (gameObject.name == "Potion(Clone)")
                 {
@@ -80,7 +80,7 @@ public class KeyObjectInteractable : MonoBehaviour
         }
         else
         {
-            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(1).gameObject.SetActive(false);
         }
         
         if (_movingUp)

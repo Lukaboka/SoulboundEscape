@@ -21,13 +21,16 @@ public class MapGenerator : MonoBehaviour
 
     [Header("Objects")] 
     [SerializeField] private GameObject[] keyOjects;
+    [SerializeField] private GameObject[] complexInteractables;
     [SerializeField] private GameObject[] overworldEnvironmentObjects;
     [SerializeField] private GameObject[] underworldEnvironmentObjects;
     [SerializeField] private GameObject[] overworldEnvironmentDummyObjects;
     [SerializeField] private GameObject[] underworldEnvironmentDummyObjects;
+    [SerializeField] private int interactablesOptionCount;
     [SerializeField] private int treeOptionCount;
     [SerializeField] private int plantOptionCount;
     [SerializeField] private int rockOptionCount;
+    [SerializeField] private int interactableDensityPercent;
     [SerializeField] private int treeDensityPercent;
     [SerializeField] private int plantDensityPercent;
     [SerializeField] private int rockDensityPercent;
@@ -439,6 +442,43 @@ public class MapGenerator : MonoBehaviour
                 _underworldEnvironmentObjects[(int)location.x, (int)location.z].tag = "Environment";
                 underworldDummyObject.tag = "Environment";
                 overworldDummyObject.tag = "Environment";
+
+                _overworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
+                _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
+                underworldDummyObject.transform.parent = _anchor;
+                overworldDummyObject.transform.parent = _anchor;
+                removedLocations.Add(location);
+            }
+            // Spawn interactables at interactableDensityPercent chance
+            else if (randomObjectType >= treeDensityPercent + plantDensityPercent + rockDensityPercent && randomObjectType <
+                     treeDensityPercent + plantDensityPercent + rockDensityPercent + interactableDensityPercent)
+            {
+                int randomObject = Random.Range(treeOptionCount + plantOptionCount + rockOptionCount, treeOptionCount + plantOptionCount
+                    + rockOptionCount + interactablesOptionCount);
+
+                _overworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(
+                    overworldEnvironmentObjects[randomObject],
+                    new Vector3(location.x * spacingOffset + anchorPosition.x + randomOffsetX, 1f,
+                        location.z * spacingOffset + anchorPosition.z + randomOffsetZ),
+                    Quaternion.Euler(-90, randomRotation, 0));
+                GameObject underworldDummyObject = Instantiate(underworldEnvironmentDummyObjects[randomObject],
+                    new Vector3(location.x * spacingOffset + anchorPosition.x + Random.Range(0, 1.5f), -1.5f,
+                        location.z * spacingOffset + anchorPosition.z + Random.Range(0, 1.5f)),
+                    Quaternion.Euler(90, randomRotation, 180));
+                _underworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(
+                    underworldEnvironmentObjects[randomObject],
+                    new Vector3(location.x * spacingOffset + anchorPosition.x + randomOffsetX, -99f,
+                        location.z * spacingOffset + anchorPosition.z + randomOffsetZ),
+                    Quaternion.Euler(-90, randomRotation, 0));
+                GameObject overworldDummyObject = Instantiate(overworldEnvironmentDummyObjects[randomObject],
+                    new Vector3(location.x * spacingOffset + anchorPosition.x + Random.Range(0, 1.5f), -101.5f,
+                        location.z * spacingOffset + anchorPosition.z + Random.Range(0, 1.5f)),
+                    Quaternion.Euler(90, randomRotation, 180));
+
+                _overworldEnvironmentObjects[(int)location.x, (int)location.z].tag = "Interactable";
+                _underworldEnvironmentObjects[(int)location.x, (int)location.z].tag = "Interactable";
+                underworldDummyObject.tag = "Interactable";
+                overworldDummyObject.tag = "Interactable";
 
                 _overworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
                 _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;

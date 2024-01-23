@@ -7,7 +7,6 @@ public class Powerup : MonoBehaviour
 	[SerializeField] private PowerupType powerup;
 	[SerializeField] private PowerupStrength strength;
 
-	[SerializeField] private ParticleSystem particle1;
 	[SerializeField] private ParticleSystem particle2;
 
 	[SerializeField] private ParticleSystem claimedParticle;
@@ -33,7 +32,6 @@ public class Powerup : MonoBehaviour
         if (other.TryGetComponent<Health>(out Health health))
         {
 			isClaimed = true;
-			particle1.gameObject.SetActive(false);
 			particle2.gameObject.SetActive(false);
 			var player = health.GetComponentInParent<PlayerCombat>();
 			player.Powerup(powerup, strength);
