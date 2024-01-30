@@ -37,10 +37,6 @@ public class MainMenu : MonoBehaviour
     private string currentText = "";
     [SerializeField] private int currentScreen = 1;
 
-
-    [Header("Text (for Shadows)")]
-    [SerializeField] private List<TextMeshProUGUI> texts;
-
     //Init Menu
     private GameObject menu;
     private GameObject info;
@@ -71,13 +67,6 @@ public class MainMenu : MonoBehaviour
         storyScreenFade.enabled = false;
         transition = GameObject.Find("TransitionPaneMainMenu").GetComponent<Animator>();
         transition.enabled = false;
-
-        //Adding shadows for texts
-        foreach(TextMeshProUGUI text in texts)
-        {
-            text.outlineWidth = 0.1f;
-            text.outlineColor = new Color32(0, 0, 0, 255);
-        }
     }
 
     public void GameStart()
@@ -92,7 +81,7 @@ public class MainMenu : MonoBehaviour
     {
         storyIMG.enabled = true;
         storyText.enabled = true;
-        storyText.outlineWidth = 0.2f;
+        storyText.outlineWidth = 0.3f;
         storyText.outlineColor = new Color32(0, 0, 0, 255);
         skipButton.enabled = true;
         skipButton.image.enabled = true;
