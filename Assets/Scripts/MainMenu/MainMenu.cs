@@ -40,6 +40,7 @@ public class MainMenu : MonoBehaviour
     //Init Menu
     private GameObject menu;
     private GameObject info;
+    private GameObject settings;
 
     //Story init
     private Image storyIMG;
@@ -53,10 +54,12 @@ public class MainMenu : MonoBehaviour
         //Story
         menu = GameObject.Find("Menu");
         info = GameObject.Find("Info");
+        settings = GameObject.Find("VolumeMenu");
         storyIMG = GameObject.Find("StoryScreen").GetComponent<Image>();
         storyText = GameObject.Find("StoryText").GetComponent<TextMeshProUGUI>();
         skipButton = GameObject.Find("SkipButton").GetComponent<Button>();
         info.SetActive(false);
+        settings.SetActive(false);
         storyIMG.enabled = false;
         storyText.enabled = false;
         skipButton.enabled = false;
@@ -189,6 +192,21 @@ public class MainMenu : MonoBehaviour
         info.SetActive(false);
         Debug.Log("Close Game Info");
     }
+
+    public void Settings()
+    {
+        AudioManager.instance.Button();
+        settings.SetActive(true);
+        Debug.Log("Game Settings");
+    }
+
+    public void CloseSettings()
+    {
+        AudioManager.instance.Button();
+        settings.SetActive(false);
+        Debug.Log("Close Settings");
+    }
+
     public void GameExit()
     {
         AudioManager.instance.Button();

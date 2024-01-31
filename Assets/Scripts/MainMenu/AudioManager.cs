@@ -26,6 +26,8 @@ public class AudioManager : MonoBehaviour
     private AudioSource bgmIntro;
     private AudioSource bgmStory;
     private AudioSource bgmNormal;
+    private AudioSource bgmBoss;
+    private AudioSource bgmWin;
 
     private AudioSource currentBGM;
 
@@ -82,6 +84,8 @@ public class AudioManager : MonoBehaviour
         bgmIntro = this.GetComponents<AudioSource>()[16];
         bgmStory = this.GetComponents<AudioSource>()[17];
         bgmNormal = this.GetComponents<AudioSource>()[18];
+        bgmBoss = this.GetComponents<AudioSource>()[19];
+        bgmWin = this.GetComponents<AudioSource>()[20];
 
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -95,6 +99,14 @@ public class AudioManager : MonoBehaviour
         if (scene.name.Equals("MainMenu"))
         {
             currentBGM = bgmIntro;
+        }
+        else if (scene.name.Equals("BossScene"))
+        {
+            currentBGM = bgmBoss;
+        }
+        else if (scene.name.Equals("Win"))
+        {
+            currentBGM = bgmWin;
         }
         else
         {
@@ -172,6 +184,7 @@ public class AudioManager : MonoBehaviour
         PlayerPrefs.SetFloat("MasterVolume", volumeMaster);
         PlayerPrefs.SetFloat("MusicVolume", volumeMusic);
         PlayerPrefs.SetFloat("SfxVolume", volumeSfx);
+        PlayerPrefs.Save();
     }
 
     public bool GetSavedVolume()

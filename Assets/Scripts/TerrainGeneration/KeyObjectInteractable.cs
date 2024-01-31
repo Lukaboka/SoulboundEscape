@@ -13,7 +13,7 @@ public class KeyObjectInteractable : MonoBehaviour
     [SerializeField] private GameObject player;
 
     [SerializeField] private CameraFollow cameraFollow;
-    
+    [SerializeField] private MenuManager menuManager;
     private Vector3 _middlePosition;
     private bool _movingUp;
     private Vector3 _upEnd;
@@ -24,6 +24,7 @@ public class KeyObjectInteractable : MonoBehaviour
         _middlePosition = transform.position;
         _upEnd = _middlePosition + new Vector3(0, distance, 0);
         _movingUp = true;
+
     }
 
     // Update is called once per frame
@@ -63,16 +64,19 @@ public class KeyObjectInteractable : MonoBehaviour
                 {
                     Debug.Log("Picked up Potion");
                     GameManager.Instance.GotPotion = true;
+                    menuManager.PotionCrossOut();
                 }
                 else if (gameObject.name == "Candles(Clone)")
                 {
                     Debug.Log("Picked up Candles");
                     GameManager.Instance.GotCandles = true;
+                    menuManager.CandlesCrossOut();
                 }
                 else if (gameObject.name == "Keys(Clone)")
                 {
                     Debug.Log("Picked up Keys");
                     GameManager.Instance.GotKeys = true;
+                    menuManager.KeysCrossOut();
                 }
                 
                 gameObject.SetActive(false);
