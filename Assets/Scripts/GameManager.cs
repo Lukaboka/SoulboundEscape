@@ -16,13 +16,14 @@ public class GameManager : MonoBehaviour
     public bool PortalOpen { get; set; }
     public bool Escaped { get; set; }
     
-
+    public bool DisableControls { get; set; }
+    
     public static GameManager Instance
     {
         get
         {
             if (_instanceGameManager is null)
-                Debug.LogError("Game Manager is not intialized");
+                _instanceGameManager = new GameManager();
             
             return _instanceGameManager;
         }
@@ -37,6 +38,7 @@ public class GameManager : MonoBehaviour
         GotKeys = false;
         GotPotion = false;
         Escaped = false;
+        DisableControls = true;
     }
 
     void Update()

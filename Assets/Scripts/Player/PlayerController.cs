@@ -52,32 +52,35 @@ public class PlayerController: MonoBehaviour
     {
         if (_dead) { return; }
         
-        GetDirection();
-        Look();
-        
-        // World flip mechanic
-        if (Input.GetKeyDown(KeyCode.F) == true)
+        if (!GameManager.Instance.DisableControls)
         {
-            if (!cameraAnimationHandler.IsInAnimation())
+            GetDirection();
+            Look();
+
+            // World flip mechanic
+            if (Input.GetKeyDown(KeyCode.F) == true)
             {
-                player.ChangeActiveWorld();
-                cameraAnimationHandler.SwapWorld();
+                if (!cameraAnimationHandler.IsInAnimation())
+                {
+                    player.ChangeActiveWorld();
+                    cameraAnimationHandler.SwapWorld();
+                }
             }
-        }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Dash();
-        }
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Dash();
+            }
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            Attack();
-        }
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                Attack();
+            }
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Interact();
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                Interact();
+            }
         }
 
     }

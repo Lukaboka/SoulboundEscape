@@ -21,7 +21,6 @@ public class MapGenerator : MonoBehaviour
 
     [Header("Objects")] 
     [SerializeField] private GameObject[] keyOjects;
-    [SerializeField] private GameObject[] complexInteractables;
     [SerializeField] private GameObject[] overworldEnvironmentObjects;
     [SerializeField] private GameObject[] underworldEnvironmentObjects;
     [SerializeField] private GameObject[] overworldEnvironmentDummyObjects;
@@ -51,6 +50,10 @@ public class MapGenerator : MonoBehaviour
 
     [Header("Enemy Spawner")]
     [SerializeField] private EnemySpawner spawner;
+    
+    [Header("Cameras")]
+    [SerializeField] private GameObject overworldCamera;
+    [SerializeField] private GameObject underworldCamera;
 
     private GameObject[,] _overworldTileMap;
     private GameObject[,] _underworldTileMap;
@@ -120,6 +123,9 @@ public class MapGenerator : MonoBehaviour
 
         spawner.gameObject.SetActive(true);
         spawner.SetMapData(validSpawnLocations, spacingOffset, _anchor);
+        
+        overworldCamera.SetActive(true);
+        underworldCamera.SetActive(true);
         
         Debug.Log("Map Generation completed");
     }
@@ -277,13 +283,46 @@ public class MapGenerator : MonoBehaviour
                         new Vector3(location.x * spacingOffset + anchorPosition.x, 0.75f,
                             location.z * spacingOffset + anchorPosition.z), Quaternion.Euler(0, 0, 0));
 
+                    if (items == 0)
+                    {
+                        overworldCamera.GetComponent<CameraFollow>().potion =
+                            _overworldEnvironmentObjects[(int)location.x, (int)location.z].transform;
+                    }
+                    else if (items == 1)
+                    {
+                        overworldCamera.GetComponent<CameraFollow>().candles =
+                            _overworldEnvironmentObjects[(int)location.x, (int)location.z].transform;
+                    }
+                    else if (items == 2)
+                    {
+                        overworldCamera.GetComponent<CameraFollow>().keys =
+                            _overworldEnvironmentObjects[(int)location.x, (int)location.z].transform;
+                    }
+                    
                     _overworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
+
                 }
                 else
                 {
                     _underworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(keyOjects[items],
                         new Vector3(location.x * spacingOffset + anchorPosition.x, -99.25f,
                             location.z * spacingOffset + anchorPosition.z), Quaternion.Euler(0, 0, 0));
+
+                    if (items == 0)
+                    {
+                        overworldCamera.GetComponent<CameraFollow>().potion =
+                            _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform;
+                    }
+                    else if (items == 1)
+                    {
+                        overworldCamera.GetComponent<CameraFollow>().candles =
+                            _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform;
+                    }
+                    else if (items == 2)
+                    {
+                        overworldCamera.GetComponent<CameraFollow>().keys =
+                            _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform;
+                    }
 
                     _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform.parent = _anchor;
                 }
