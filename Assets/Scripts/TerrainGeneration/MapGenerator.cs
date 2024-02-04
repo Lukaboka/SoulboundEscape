@@ -44,6 +44,8 @@ public class MapGenerator : MonoBehaviour
 
     [Header("Player Objects")]
     [SerializeField] private GameObject player;
+    [SerializeField] private Arrow compassOverworld;
+    [SerializeField] private Arrow compassUnderworld;
 
     [Header("Nav Mesh")] 
     [SerializeField] private NavMeshSurface navMesh;
@@ -126,6 +128,8 @@ public class MapGenerator : MonoBehaviour
         
         overworldCamera.SetActive(true);
         underworldCamera.SetActive(true);
+        compassOverworld.enabled = true;
+        compassUnderworld.enabled = true;
         
         Debug.Log("Map Generation completed");
     }
@@ -267,12 +271,16 @@ public class MapGenerator : MonoBehaviour
                     _overworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(keyOjects[items],
                         new Vector3(location.x * spacingOffset + anchorPosition.x, 3,
                             location.z * spacingOffset + anchorPosition.z), Quaternion.Euler(0, 0, 0));
+                    
+                    compassOverworld.portal = compassUnderworld.portal = _overworldEnvironmentObjects[(int)location.x, (int)location.z].transform;
                 }
                 else
                 {
                     _underworldEnvironmentObjects[(int)location.x, (int)location.z] = Instantiate(keyOjects[items],
                         new Vector3(location.x * spacingOffset + anchorPosition.x, -97,
                             location.z * spacingOffset + anchorPosition.z), Quaternion.Euler(0, 0, 0));
+                    
+                    compassOverworld.portal = compassUnderworld.portal = _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform;
                 }
             }
             else
@@ -285,17 +293,18 @@ public class MapGenerator : MonoBehaviour
 
                     if (items == 0)
                     {
-                        overworldCamera.GetComponent<CameraFollow>().potion =
+                        overworldCamera.GetComponent<CameraFollow>().potion = compassOverworld.potion = compassUnderworld.potion = 
                             _overworldEnvironmentObjects[(int)location.x, (int)location.z].transform;
+                        
                     }
                     else if (items == 1)
                     {
-                        overworldCamera.GetComponent<CameraFollow>().candles =
+                        overworldCamera.GetComponent<CameraFollow>().candles = compassOverworld.candles = compassUnderworld.candles = 
                             _overworldEnvironmentObjects[(int)location.x, (int)location.z].transform;
                     }
                     else if (items == 2)
                     {
-                        overworldCamera.GetComponent<CameraFollow>().keys =
+                        overworldCamera.GetComponent<CameraFollow>().keys = compassOverworld.keys =  compassUnderworld.keys= 
                             _overworldEnvironmentObjects[(int)location.x, (int)location.z].transform;
                     }
                     
@@ -310,17 +319,17 @@ public class MapGenerator : MonoBehaviour
 
                     if (items == 0)
                     {
-                        overworldCamera.GetComponent<CameraFollow>().potion =
+                        overworldCamera.GetComponent<CameraFollow>().potion = compassUnderworld.potion = compassOverworld.potion = 
                             _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform;
                     }
                     else if (items == 1)
                     {
-                        overworldCamera.GetComponent<CameraFollow>().candles =
+                        overworldCamera.GetComponent<CameraFollow>().candles = compassUnderworld.candles = compassOverworld.candles = 
                             _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform;
                     }
                     else if (items == 2)
                     {
-                        overworldCamera.GetComponent<CameraFollow>().keys =
+                        overworldCamera.GetComponent<CameraFollow>().keys = compassUnderworld.keys = compassOverworld.keys = 
                             _underworldEnvironmentObjects[(int)location.x, (int)location.z].transform;
                     }
 

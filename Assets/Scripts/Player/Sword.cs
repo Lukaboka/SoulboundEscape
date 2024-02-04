@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Sword : MonoBehaviour
 {
-    [SerializeField] private PlayerCombat _player;
+
     private bool _isAttacking = false;
     private int _damage = 0;
 

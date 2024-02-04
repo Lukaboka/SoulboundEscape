@@ -28,6 +28,12 @@ public class PlayerController: MonoBehaviour
     [SerializeField] private float attackSpeed = 1.5f;
     [SerializeField] private float attackDelay = 0.3f;
     [SerializeField] private float attackDamage = 1;
+
+    [Header("Compass")] 
+    [SerializeField] private Arrow compassOverworld;
+    [SerializeField] private Arrow compassUnderworld;
+    [SerializeField] private CompassCooldown _compassCooldown;
+    [SerializeField] public int cooldown;
     
     private bool _swapped;
     private Vector2 _inputVector;
@@ -40,6 +46,8 @@ public class PlayerController: MonoBehaviour
     private static readonly int Dead = Animator.StringToHash("Dead");
 
     private bool _dead = false;
+
+    public bool _compassActivated;
 
     private void Awake()
     {
@@ -80,6 +88,12 @@ public class PlayerController: MonoBehaviour
             if (Input.GetKeyDown(KeyCode.E))
             {
                 Interact();
+            }
+
+            if (Input.GetKeyDown(KeyCode.C) && !_compassActivated)
+            {
+                StartCoroutine(ActivateCompass());
+                _compassCooldown.StartCooldown();
             }
         }
 
@@ -140,7 +154,7 @@ public class PlayerController: MonoBehaviour
             animatorCharacterOverworld.SetBool(Attacking, true);
             animatorDummyUnderworld.SetBool(Attacking, true);
         }
-        StartCoroutine(FinishAttack(1f));
+        StartCoroutine(FinishAttack(0.5f));
     }
 
     private IEnumerator FinishAttack(float attackInterval)
@@ -223,5 +237,16 @@ public class PlayerController: MonoBehaviour
 
         FindObjectOfType<GameManager>().Lose();
     }
-    
+
+    private IEnumerator ActivateCompass()
+    {
+        _compassActivated = true;
+        compassOverworld.SetActive(true);
+        compassUnderworld.SetActive(true);
+        yield return new WaitForSeconds(5);
+        compassOverworld.SetActive(false);
+        compassUnderworld.SetActive(false);
+        yield return new WaitForSeconds(cooldown - 5);
+        _compassActivated = false;
+    }
 }

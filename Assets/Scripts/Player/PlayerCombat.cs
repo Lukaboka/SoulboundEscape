@@ -56,19 +56,17 @@ public class PlayerCombat : MonoBehaviour
             swordParticle_overworld.gameObject.SetActive(true);
             swordParticle_overworld.Play();
             StartCoroutine(stopParticle(swordParticle_overworld.totalTime));
-            Debug.Log("Attack");
         } else {
             underworldSword.AttackStateChanged(state);
             swordParticle_underworld.gameObject.SetActive(true);
             swordParticle_underworld.Play();
             StartCoroutine(stopParticle(swordParticle_underworld.totalTime));
-            Debug.Log("Attack");
         }
     }
 
     IEnumerator stopParticle(float time)
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.1f);
         swordParticle_overworld.gameObject.SetActive(false);
         swordParticle_underworld.gameObject.SetActive(false);
     }
