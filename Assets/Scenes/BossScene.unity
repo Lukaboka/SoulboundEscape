@@ -64332,7 +64332,7 @@ MonoBehaviour:
   attackSpeed: 1
   attackDelay: 0.3
   attackDamage: 1
-  attackCooldown: 1.1
+  attackCooldown: 0.6
   compassOverworld: {fileID: 0}
   compassUnderworld: {fileID: 0}
   _compassCooldown: {fileID: 0}
