@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
@@ -16,9 +17,12 @@ public class MenuManager : MonoBehaviour
     {
         settings.SetActive(false);
         info.SetActive(false);
-        crossPotion.enabled = false;
-        crossKeys.enabled = false;
-        crossCandles.enabled = false;
+        if (SceneManager.GetActiveScene().name == "MapGenerationScene")
+        {
+            crossPotion.enabled = false;
+            crossKeys.enabled = false;
+            crossCandles.enabled = false;
+        }
     }
 
     // Update is called once per frame

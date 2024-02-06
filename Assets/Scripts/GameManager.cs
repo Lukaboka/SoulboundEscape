@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     
     public bool DisableControls { get; set; }
     
+    public int BossesKilled { get; set; }
+    
     public static GameManager Instance
     {
         get
@@ -39,13 +41,14 @@ public class GameManager : MonoBehaviour
         GotPotion = false;
         Escaped = false;
         DisableControls = true;
+        BossesKilled = 0;
     }
 
     void Update()
     {
         if(isBossScene)
         {
-            if(Escaped)
+            if (BossesKilled == 2)
             {
                 SceneManager.LoadScene("Win");
             }

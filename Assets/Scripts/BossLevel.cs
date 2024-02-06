@@ -13,7 +13,7 @@ public class BossLevel : MonoBehaviour
 
         if(kill_count == 2)
         {
-            gm.Escaped = true;
+            GameManager.Instance.Escaped = true;
         }
     }
 }

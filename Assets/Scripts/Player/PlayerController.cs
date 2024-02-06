@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using System;
+using UnityEngine.SceneManagement;
 
 
 public class PlayerController: MonoBehaviour
@@ -28,6 +29,7 @@ public class PlayerController: MonoBehaviour
     [SerializeField] private float attackSpeed = 1.5f;
     [SerializeField] private float attackDelay = 0.3f;
     [SerializeField] private float attackDamage = 1;
+    [SerializeField] private float attackCooldown = 1f;
 
     [Header("Compass")] 
     [SerializeField] private Arrow compassOverworld;
@@ -44,15 +46,17 @@ public class PlayerController: MonoBehaviour
     private static readonly int Attacking = Animator.StringToHash("Attacking");
     private static readonly int Dashing = Animator.StringToHash("Dashing");
     private static readonly int Dead = Animator.StringToHash("Dead");
-
+    private float _attackTimer;
+    private bool _attackReady;
     private bool _dead = false;
 
-    public bool _compassActivated;
+    public bool compassActivated;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
         _transform = transform;
+        _attackReady = true;
     }
 
     // Update is called once per frame
@@ -66,7 +70,7 @@ public class PlayerController: MonoBehaviour
             Look();
 
             // World flip mechanic
-            if (Input.GetKeyDown(KeyCode.F) == true)
+            if (Input.GetKeyDown(KeyCode.F))
             {
                 if (!cameraAnimationHandler.IsInAnimation())
                 {
@@ -80,8 +84,10 @@ public class PlayerController: MonoBehaviour
                 Dash();
             }
 
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            if (Input.GetKeyDown(KeyCode.Mouse0) && _attackReady)
             {
+                _attackTimer = 0;
+                _attackReady = false;
                 Attack();
             }
 
@@ -90,13 +96,25 @@ public class PlayerController: MonoBehaviour
                 Interact();
             }
 
-            if (Input.GetKeyDown(KeyCode.C) && !_compassActivated)
+            if (SceneManager.GetActiveScene().name == "MapGenerationScene")
             {
-                StartCoroutine(ActivateCompass());
-                _compassCooldown.StartCooldown();
+                if (Input.GetKeyDown(KeyCode.C) && !compassActivated)
+                {
+                    StartCoroutine(ActivateCompass());
+                    _compassCooldown.StartCooldown();
+                }
             }
         }
 
+        if (!_attackReady)
+        {
+            _attackTimer += Time.deltaTime;
+        }
+
+        if (_attackTimer >= attackCooldown)
+        {
+            _attackReady = true;
+        }
     }
 
     private void FixedUpdate()
@@ -154,7 +172,7 @@ public class PlayerController: MonoBehaviour
             animatorCharacterOverworld.SetBool(Attacking, true);
             animatorDummyUnderworld.SetBool(Attacking, true);
         }
-        StartCoroutine(FinishAttack(0.5f));
+        StartCoroutine(FinishAttack(0.2f));
     }
 
     private IEnumerator FinishAttack(float attackInterval)
@@ -240,13 +258,13 @@ public class PlayerController: MonoBehaviour
 
     private IEnumerator ActivateCompass()
     {
-        _compassActivated = true;
+        compassActivated = true;
         compassOverworld.SetActive(true);
         compassUnderworld.SetActive(true);
         yield return new WaitForSeconds(5);
         compassOverworld.SetActive(false);
         compassUnderworld.SetActive(false);
         yield return new WaitForSeconds(cooldown - 5);
-        _compassActivated = false;
+        compassActivated = false;
     }
 }

@@ -35,6 +35,10 @@ public class EnemySpawner : MonoBehaviour
     {
         _wave = 0;
         Debug.Log("Enemy Spawning started");
+        if (isBossScene)
+        {
+            GameManager.Instance.DisableControls = false;
+        }
         StartCoroutine(Spawn());
     }
 
@@ -173,8 +177,8 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnMobs(int spawnCounter, List<Vector3> validSpawnPoints, int index)
     {
-        int mushroomAmount = 8 + _wave * 2;
-        int cactusAmount = 5 + _wave;
+        int mushroomAmount = 8 + _wave * 4;
+        int cactusAmount = 5 + _wave * 2;
 
         if (mushroomAmount + cactusAmount > spawnCounter)
         {

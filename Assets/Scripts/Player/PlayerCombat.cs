@@ -13,7 +13,6 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private Health _overworldHealth;
     [SerializeField] private Health _underworlddHealth;
 
-
     [Header("Attack")]
     [SerializeField] private float attackRange = 2f;
     [SerializeField] private float attackCooldown = 5f;
@@ -25,6 +24,9 @@ public class PlayerCombat : MonoBehaviour
 
     [SerializeField] private Sword overworldSword;
     [SerializeField] private Sword underworldSword;
+
+    [SerializeField] private HitArea overworldHitArea;
+    [SerializeField] private HitArea underworldHitArea;
 
     [SerializeField] private ParticleSystem swordParticle_overworld;
     [SerializeField] private ParticleSystem swordParticle_underworld;
@@ -52,21 +54,27 @@ public class PlayerCombat : MonoBehaviour
     {
         if (isDead) { return; }
         if (activeWorld) {
-            overworldSword.AttackStateChanged(state);
-            swordParticle_overworld.gameObject.SetActive(true);
-            swordParticle_overworld.Play();
-            StartCoroutine(stopParticle(swordParticle_overworld.totalTime));
+            overworldHitArea.AttackStateChanged(state);
+            if (state)
+            {
+                swordParticle_overworld.gameObject.SetActive(true);
+                swordParticle_overworld.Play();
+                StartCoroutine(stopParticle(swordParticle_overworld.totalTime));
+            }
         } else {
-            underworldSword.AttackStateChanged(state);
-            swordParticle_underworld.gameObject.SetActive(true);
-            swordParticle_underworld.Play();
-            StartCoroutine(stopParticle(swordParticle_underworld.totalTime));
+            underworldHitArea.AttackStateChanged(state);
+            if (state)
+            {
+                swordParticle_underworld.gameObject.SetActive(true);
+                swordParticle_underworld.Play();
+                StartCoroutine(stopParticle(swordParticle_underworld.totalTime));
+            }
         }
     }
 
     IEnumerator stopParticle(float time)
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(1f);
         swordParticle_overworld.gameObject.SetActive(false);
         swordParticle_underworld.gameObject.SetActive(false);
     }
@@ -104,8 +112,8 @@ public class PlayerCombat : MonoBehaviour
     public void SetData()
     {
         _controller.SetMovementSpeed(data.speed);
-        overworldSword.SetDamage(data.damage);
-        underworldSword.SetDamage(data.damage);
+        overworldHitArea.SetDamage(data.damage);
+        underworldHitArea.SetDamage(data.damage);
         _underworlddHealth.SetHealth(data.hp, data.hp);
         _overworldHealth.SetHealth(data.hp, data.hp);
 
@@ -125,30 +133,30 @@ public class PlayerCombat : MonoBehaviour
                 switch (strength)
                 {
                     case PowerupStrength.low:
-                        _damage += 10;
+                        _damage += 2;
                         break;
                     case PowerupStrength.mid:
-                        _damage += 25;
+                        _damage += 5;
                         break;
                     case PowerupStrength.high:
-                        _damage += 50;
+                        _damage += 8;
                         break;
                 }
                 AudioManager.instance.Heal2();
-                overworldSword.SetDamage(_damage);
-                underworldSword.SetDamage(_damage);
+                overworldHitArea.SetDamage(_damage);
+                underworldHitArea.SetDamage(_damage);
                 break;
             case PowerupType.Health:
                 switch (strength)
                 {
                     case PowerupStrength.low:
-                        _hp = 10;
+                        _hp = 5;
                         break;
                     case PowerupStrength.mid:
-                        _hp = 25;
+                        _hp = 10;
                         break;
                     case PowerupStrength.high:
-                        _hp = 50;
+                        _hp = 25;
                         break;
                 }
                 if (activeWorld) { _overworldHealth.Heal(_hp); }
@@ -158,13 +166,13 @@ public class PlayerCombat : MonoBehaviour
                 switch (strength)
                 {
                     case PowerupStrength.low:
-                        _speed += .2f;
+                        _speed += 0.1f;
                         break;
                     case PowerupStrength.mid:
-                        _speed += .5f;
+                        _speed += 0.3f;
                         break;
                     case PowerupStrength.high:
-                        _speed += 1f;
+                        _speed += 0.8f;
                         break;
                 }
                 AudioManager.instance.Heal2();

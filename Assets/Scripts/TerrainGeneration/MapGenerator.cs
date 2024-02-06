@@ -5,6 +5,7 @@ using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.Tilemaps;
 using Quaternion = UnityEngine.Quaternion;
@@ -128,8 +129,12 @@ public class MapGenerator : MonoBehaviour
         
         overworldCamera.SetActive(true);
         underworldCamera.SetActive(true);
-        compassOverworld.enabled = true;
-        compassUnderworld.enabled = true;
+        
+        if (SceneManager.GetActiveScene().name == "MapGenerationScene")
+        {
+            compassOverworld.enabled = true;
+            compassUnderworld.enabled = true;
+        }
         
         Debug.Log("Map Generation completed");
     }

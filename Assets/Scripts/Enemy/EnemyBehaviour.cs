@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class EnemyBehaviour : MonoBehaviour
 {
@@ -28,7 +29,8 @@ public class EnemyBehaviour : MonoBehaviour
 
     [Header("Boss Level Components")]
     [SerializeField] private bool isBossLevel = false;
-    
+
+
     private bool _attacking;
     private bool _isDead;
     private Transform _transform;
@@ -44,10 +46,22 @@ public class EnemyBehaviour : MonoBehaviour
     {
         SetEnemyValues();
         agent.destination = target.position;
+        if (SceneManager.GetActiveScene().name == "BossScene")
+        {
+            isBossLevel = true;
+        }
     }
 
     void FixedUpdate()
     {
+        if (_isDead)
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            agent.destination = transform.position;
+            return;
+        }
+        
         if(_attacking) { return; }
 
         float distance = Vector3.Distance(target.position, rb.position);
@@ -60,7 +74,7 @@ public class EnemyBehaviour : MonoBehaviour
         {
             agent.destination = target.position;
             animator.SetBool("moving", true);
-            Move();
+            //Move();
         } else {
             animator.SetBool("moving", false);
         }
@@ -109,6 +123,9 @@ public class EnemyBehaviour : MonoBehaviour
     private IEnumerator AttackingRoutine()
     {
         yield return new WaitForSeconds(.25f);
+        transform.LookAt(target);
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
         enemyCombat.Attack();
         yield return new WaitForSeconds(.75f);
         animator.SetBool("attacking", false);
@@ -123,7 +140,13 @@ public class EnemyBehaviour : MonoBehaviour
 
     public void onDeathTrigger()
     {
-        if(isBossLevel) { FindObjectOfType<BossLevel>().BossKilled(); }
+        Debug.Log("Boss died!");
+        if (isBossLevel && isBoss)
+        {
+            Debug.Log("test");
+            GameManager.Instance.BossesKilled++; 
+        }
+
         _isDead = true;
     }
 
